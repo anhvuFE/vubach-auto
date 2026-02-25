@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import {
-  Layout,
   Table,
   Button,
   Modal,
@@ -69,14 +68,6 @@ const AdminPanel: React.FC = () => {
   const [carModalVisible, setCarModalVisible] = useState(false);
   const [editingCar, setEditingCar] = useState<Car | null>(null);
   const [form] = Form.useForm();
-  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
-
-  // Handle window resize
-  useEffect(() => {
-    const handleResize = () => setWindowWidth(window.innerWidth);
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
   const [loginForm] = Form.useForm();
 
   useEffect(() => {
