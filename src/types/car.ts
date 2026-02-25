@@ -5,24 +5,19 @@ export interface Car {
   year: number;
   price: number;
   mileage: number;
+  transmission: 'Manual' | 'Automatic';
   fuelType: 'Xăng' | 'Dầu' | 'Hybrid' | 'Điện';
-  transmission: 'Số sàn' | 'Tự động' | 'Bán tự động';
-  engineCapacity: string;
-  seats: number;
+  condition: 'Mới' | 'Như mới' | 'Tốt' | 'Trung bình';
   color: string;
-  location: string;
-  images: string[];
+  seats: number;
+  origin: string;
   description: string;
   features: string[];
-  status: 'available' | 'sold' | 'pending';
-  createdAt: Date;
-  updatedAt: Date;
-}
-
-export interface CarFilter {
-  brand?: string;
-  priceRange?: [number, number];
-  yearRange?: [number, number];
-  fuelType?: string;
-  transmission?: string;
+  images: string[];
+  mainImage: string;
+  status: 'available' | 'sold' | 'reserved';
+  createdAt: string;
+  updatedAt: string;
+  contactPhone?: string;
+  contactName?: string;
 }
