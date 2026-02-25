@@ -1,31 +1,28 @@
 import React, { useEffect } from "react";
 import {
   Container,
-  Grid,
   Typography,
   Box,
-  Card,
-  CardMedia,
-  CardContent,
-  Chip,
   BottomNavigation,
   BottomNavigationAction,
-  Paper,
-  Stack,
   Divider,
 } from "@mui/material";
 import {
   Layout,
   Input,
-  Badge,
   FloatButton,
   message,
-  Avatar,
   Dropdown,
   Button as AntButton,
+  Card,
+  Row,
+  Col,
+  Tag,
+  Space,
+  Statistic,
+  Image,
 } from "antd";
 import {
-  SearchOutlined,
   PhoneOutlined,
   MessageOutlined,
   FacebookOutlined,
@@ -34,13 +31,16 @@ import {
   EnvironmentOutlined,
   MailOutlined,
   CommentOutlined,
+  CalendarOutlined,
+  DashboardOutlined,
+  ToolOutlined,
+  SafetyCertificateOutlined,
 } from "@ant-design/icons";
 import {
   DirectionsCar,
   Home,
   Info,
   ContactPhone,
-  AdminPanelSettings,
 } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import useCarStore from "@/store/carStore";
@@ -83,12 +83,6 @@ const HomePage: React.FC = () => {
         car.description.toLowerCase().includes(searchTerm.toLowerCase())),
   );
 
-  const formatPrice = (price: number) => {
-    return new Intl.NumberFormat("vi-VN", {
-      style: "currency",
-      currency: "VND",
-    }).format(price);
-  };
 
   const formatMileage = (mileage: number) => {
     return new Intl.NumberFormat("vi-VN").format(mileage) + " km";
@@ -109,13 +103,14 @@ const HomePage: React.FC = () => {
       <Header
         style={{
           background: "white",
-          padding: "0 8px",
-          borderBottom: "1px solid #e0e0e0",
+          padding: "0 16px",
+          borderBottom: "1px solid #e8e8e8",
           position: "sticky",
           top: 0,
           zIndex: 1000,
           height: "auto",
           lineHeight: "normal",
+          boxShadow: "0 2px 8px rgba(0,0,0,0.06)",
         }}
       >
         <Box
@@ -123,9 +118,10 @@ const HomePage: React.FC = () => {
             display: "flex",
             alignItems: "center",
             justifyContent: "space-between",
-            py: { xs: 1, sm: 1.5 },
-            flexWrap: { xs: "wrap", md: "nowrap" },
-            gap: { xs: 1, sm: 2 },
+            py: { xs: 1.5, sm: 2 },
+            maxWidth: "1200px",
+            margin: "0 auto",
+            gap: { xs: 2, sm: 3 },
           }}
         >
           {/* Logo */}
@@ -133,17 +129,26 @@ const HomePage: React.FC = () => {
             sx={{
               display: "flex",
               alignItems: "center",
-              gap: { xs: 1, sm: 2 },
-              minWidth: { xs: "auto", sm: "180px" },
+              gap: 2,
+              minWidth: "160px",
             }}
           >
-            <CarOutlined style={{ fontSize: 20, color: "#1976d2" }} />
+            <CarOutlined
+              style={{
+                fontSize: 28,
+                color: "#1976d2",
+                padding: "8px",
+                background: "#e3f2fd",
+                borderRadius: "8px",
+              }}
+            />
             <Typography
               variant="h6"
               component="div"
               sx={{
-                fontWeight: 600,
-                fontSize: { xs: "1rem", sm: "1.25rem" },
+                fontWeight: 700,
+                fontSize: { xs: "1.1rem", sm: "1.3rem" },
+                color: "#1976d2",
                 display: { xs: "none", sm: "block" },
               }}
             >
@@ -155,17 +160,18 @@ const HomePage: React.FC = () => {
           <Box
             sx={{
               flex: 1,
-              maxWidth: { sm: 400, md: 500 },
-              display: { xs: "none", sm: "block" },
-              px: 2,
+              maxWidth: 400,
+              display: { xs: "none", lg: "block" },
             }}
           >
             <AntSearch
-              placeholder="Tìm kiếm xe..."
+              placeholder="Tìm kiếm hãng xe..."
               allowClear
-              enterButton={<SearchOutlined />}
-              size="large"
-              style={{ width: "100%" }}
+              enterButton="Tìm"
+              size="middle"
+              style={{
+                width: "100%",
+              }}
               onSearch={(value) => setSearchTerm(value)}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
@@ -179,63 +185,53 @@ const HomePage: React.FC = () => {
               gap: { xs: 1, sm: 2 },
             }}
           >
-            <Badge count={1} showZero>
-              <AntButton
-                type="primary"
-                icon={<PhoneOutlined />}
-                href="tel:0975224557"
-                size="large"
+            <AntButton
+              type="primary"
+              icon={<PhoneOutlined />}
+              href="tel:0975224557"
+              size="large"
+              style={{
+                fontSize: "14px",
+                fontWeight: 600,
+              }}
+            >
+              <span
                 style={{
-                  fontSize: "14px",
-                  padding: "4px 8px",
+                  display: windowWidth < 576 ? "none" : "inline",
+                  marginLeft: "4px"
                 }}
               >
-                <span
-                  style={{ display: windowWidth < 400 ? "none" : "inline" }}
-                >
-                  0975 224 557
-                </span>
-              </AntButton>
-            </Badge>
+                0975 224 557
+              </span>
+            </AntButton>
 
             <AntButton
               onClick={handleResetData}
               size="large"
               style={{
-                display: windowWidth < 576 ? "none" : "inline-flex",
+                display: windowWidth < 768 ? "none" : "inline-flex",
               }}
             >
               Reset
             </AntButton>
 
             <Dropdown menu={{ items: adminMenuItems }} placement="bottomRight">
-              <Avatar
-                style={{ backgroundColor: "#1976d2", cursor: "pointer" }}
-                icon={<AdminPanelSettings />}
-                size={windowWidth < 576 ? "default" : "large"}
-              />
+              <AntButton
+                type="text"
+                icon={<UserOutlined />}
+                size="large"
+                style={{
+                  border: "1px solid #d9d9d9",
+                  display: "flex",
+                  alignItems: "center",
+                }}
+              >
+                {windowWidth >= 576 && <span style={{ marginLeft: "4px" }}>Admin</span>}
+              </AntButton>
             </Dropdown>
           </Box>
         </Box>
 
-        {/* Mobile Search */}
-        <Box
-          sx={{
-            display: { xs: "block", sm: "none" },
-            width: "100%",
-            pb: 1,
-          }}
-        >
-          <AntSearch
-            placeholder="Tìm kiếm xe..."
-            allowClear
-            enterButton={<SearchOutlined />}
-            size="middle"
-            style={{ width: "100%" }}
-            onSearch={(value) => setSearchTerm(value)}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
-        </Box>
       </Header>
 
       {/* Hero Section with Banner Image */}
@@ -264,283 +260,241 @@ const HomePage: React.FC = () => {
         />
       </Box>
 
-      {/* Cars Grid */}
-      <Container sx={{ py: { xs: 3, sm: 4, md: 6 }, bgcolor: "#f8f9fa" }}>
-        <Typography
-          variant="h4"
-          component="h2"
-          fontWeight={700}
-          sx={{
-            mb: 4,
-            fontSize: { xs: "1.75rem", md: "2.125rem" },
-            color: "#1a1a1a",
-          }}
-        >
-          Xe đang bán ({filteredCars.length})
-        </Typography>
+      {/* Cars Grid using Ant Design */}
+      <div style={{ padding: "48px 24px", backgroundColor: "#f8f9fa" }}>
+        <Container>
+          <Typography
+            variant="h4"
+            component="h2"
+            fontWeight={700}
+            sx={{
+              mb: 4,
+              fontSize: { xs: "1.75rem", md: "2.125rem" },
+              color: "#1a1a1a",
+              textAlign: "center",
+            }}
+          >
+            Xe đang bán ({filteredCars.length})
+          </Typography>
 
-        <Grid container spacing={{ xs: 2, sm: 2.5, md: 3 }}>
-          {filteredCars.map((car) => (
-            <Grid item xs={12} sm={6} md={4} key={car.id}>
-              <Card
-                sx={{
-                  height: "100%",
-                  display: "flex",
-                  flexDirection: "column",
-                  cursor: "pointer",
-                  transition: "all 0.3s ease",
-                  border: "none",
-                  borderRadius: 2,
-                  overflow: "hidden",
-                  boxShadow: "0 2px 8px rgba(0,0,0,0.08)",
-                  "&:hover": {
-                    transform: "translateY(-8px)",
-                    boxShadow: "0 12px 24px rgba(0,0,0,0.15)",
-                  },
-                }}
-                onClick={() => navigate(`/car/${car.id}`)}
-              >
-                <Box
-                  sx={{
-                    position: "relative",
-                    paddingTop: "66.67%",
+          <Row gutter={[24, 24]}>
+            {filteredCars.map((car) => (
+              <Col xs={24} sm={12} lg={8} key={car.id}>
+                <Card
+                  hoverable
+                  style={{
+                    height: "100%",
+                    borderRadius: "12px",
                     overflow: "hidden",
+                    boxShadow: "0 2px 8px rgba(0,0,0,0.08)",
                   }}
+                  bodyStyle={{ padding: "20px" }}
+                  cover={
+                    <div style={{ position: "relative", overflow: "hidden" }}>
+                      <Image
+                        alt={`${car.brand} ${car.model}`}
+                        src={car.mainImage}
+                        style={{
+                          width: "100%",
+                          height: "250px",
+                          objectFit: "cover",
+                        }}
+                        fallback="https://via.placeholder.com/400x300?text=Car+Image"
+                        preview={false}
+                      />
+                    </div>
+                  }
+                  onClick={() => navigate(`/car/${car.id}`)}
                 >
-                  <CardMedia
-                    component="img"
-                    image={car.mainImage}
-                    alt={`${car.brand} ${car.model}`}
-                    sx={{
-                      position: "absolute",
-                      top: 0,
-                      left: 0,
-                      width: "100%",
-                      height: "100%",
-                      objectFit: "cover",
-                      transition: "transform 0.3s ease",
-                      "&:hover": {
-                        transform: "scale(1.05)",
-                      },
-                    }}
-                    onError={(e: any) => {
-                      e.target.src =
-                        "https://via.placeholder.com/400x300?text=" +
-                        encodeURIComponent(car.brand + " " + car.model);
-                    }}
+                  <Card.Meta
+                    title={
+                      <Space direction="vertical" size={4} style={{ width: "100%" }}>
+                        <span
+                          style={{
+                            fontSize: "18px",
+                            fontWeight: 600,
+                            color: "#1a1a1a",
+                          }}
+                        >
+                          {car.brand} {car.model}
+                        </span>
+                        <Statistic
+                          value={car.price}
+                          precision={0}
+                          valueStyle={{
+                            color: "#dc2626",
+                            fontSize: "20px",
+                            fontWeight: 700,
+                          }}
+                          formatter={(value) =>
+                            new Intl.NumberFormat("vi-VN", {
+                              style: "currency",
+                              currency: "VND",
+                            }).format(Number(value))
+                          }
+                        />
+                      </Space>
+                    }
+                    description={
+                      <Space direction="vertical" size={12} style={{ width: "100%" }}>
+                        <Space wrap>
+                          <Tag icon={<CalendarOutlined />} color="blue">
+                            {car.year}
+                          </Tag>
+                          <Tag icon={<DashboardOutlined />} color="green">
+                            {formatMileage(car.mileage)}
+                          </Tag>
+                          <Tag icon={<ToolOutlined />} color="orange">
+                            {car.transmission === "Automatic" ? "Tự động" : "Số sàn"}
+                          </Tag>
+                          <Tag
+                            icon={<SafetyCertificateOutlined />}
+                            color={car.fuelType === "Điện" ? "cyan" : "default"}
+                          >
+                            {car.fuelType}
+                          </Tag>
+                        </Space>
+
+                        <p
+                          style={{
+                            color: "#6b7280",
+                            fontSize: "14px",
+                            lineHeight: "1.4",
+                            display: "-webkit-box",
+                            WebkitLineClamp: 2,
+                            WebkitBoxOrient: "vertical",
+                            overflow: "hidden",
+                            textOverflow: "ellipsis",
+                            margin: 0,
+                          }}
+                        >
+                          {car.description}
+                        </p>
+
+                        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                          <Tag color="success" style={{ fontWeight: 600 }}>
+                            {car.condition}
+                          </Tag>
+                          <span style={{ color: "#8c8c8c", fontSize: "12px" }}>
+                            {car.seats} chỗ • {car.color}
+                          </span>
+                        </div>
+                      </Space>
+                    }
                   />
-                </Box>
-                <CardContent sx={{ flexGrow: 1, p: { xs: 2, sm: 2.5, md: 3 } }}>
-                  <Typography
-                    variant="h6"
-                    component="h3"
-                    fontWeight={600}
-                    sx={{
-                      mb: 1.5,
-                      fontSize: "1.125rem",
-                      color: "#1a1a1a",
-                    }}
-                  >
-                    {car.brand} {car.model}
-                  </Typography>
+                </Card>
+              </Col>
+            ))}
+          </Row>
 
-                  <Typography
-                    variant="h5"
-                    sx={{
-                      color: "#dc2626",
-                      fontWeight: 700,
-                      mb: 2,
-                      fontSize: "1.5rem",
-                    }}
-                  >
-                    {formatPrice(car.price)}
-                  </Typography>
+          {filteredCars.length === 0 && (
+            <div style={{ textAlign: "center", padding: "64px 0" }}>
+              <Typography variant="h6" color="text.secondary">
+                Không tìm thấy xe phù hợp
+              </Typography>
+            </div>
+          )}
+        </Container>
+      </div>
 
-                  <Stack
-                    direction="row"
-                    spacing={1}
-                    flexWrap="wrap"
-                    useFlexGap
-                    sx={{ mb: 2, gap: 0.5 }}
-                  >
-                    <Chip
-                      label={car.year}
-                      size="small"
-                      sx={{
-                        bgcolor: "#f3f4f6",
-                        color: "#4b5563",
-                        fontWeight: 500,
-                        border: "none",
-                      }}
-                    />
-                    <Chip
-                      label={formatMileage(car.mileage)}
-                      size="small"
-                      sx={{
-                        bgcolor: "#f3f4f6",
-                        color: "#4b5563",
-                        fontWeight: 500,
-                        border: "none",
-                      }}
-                    />
-                    <Chip
-                      label={
-                        car.transmission === "Automatic" ? "Tự động" : "Số sàn"
-                      }
-                      size="small"
-                      sx={{
-                        bgcolor: "#f3f4f6",
-                        color: "#4b5563",
-                        fontWeight: 500,
-                        border: "none",
-                      }}
-                    />
-                    <Chip
-                      label={car.fuelType}
-                      size="small"
-                      sx={{
-                        bgcolor:
-                          car.fuelType === "Điện" ? "#dcfce7" : "#f3f4f6",
-                        color: car.fuelType === "Điện" ? "#16a34a" : "#4b5563",
-                        fontWeight: 500,
-                        border: "none",
-                      }}
-                    />
-                  </Stack>
-
-                  <Typography
-                    variant="body2"
-                    sx={{
-                      color: "#6b7280",
-                      overflow: "hidden",
-                      textOverflow: "ellipsis",
-                      display: "-webkit-box",
-                      WebkitLineClamp: 2,
-                      WebkitBoxOrient: "vertical",
-                      lineHeight: 1.5,
-                      mb: 2,
-                    }}
-                  >
-                    {car.description}
-                  </Typography>
-
-                  <Box>
-                    <Chip
-                      label={car.condition}
-                      size="small"
-                      sx={{
-                        bgcolor: "#dcfce7",
-                        color: "#16a34a",
-                        fontWeight: 600,
-                        border: "1px solid #86efac",
-                        px: 1.5,
-                      }}
-                    />
-                  </Box>
-                </CardContent>
-              </Card>
-            </Grid>
-          ))}
-        </Grid>
-
-        {filteredCars.length === 0 && (
-          <Box sx={{ textAlign: "center", py: 8 }}>
-            <Typography variant="h6" color="text.secondary">
-              Không tìm thấy xe phù hợp
-            </Typography>
-          </Box>
-        )}
-      </Container>
-
-      {/* Footer using MUI BottomNavigation */}
-      <Paper
-        sx={{
-          bgcolor: "#1a1a1a",
+      {/* Footer using Ant Design */}
+      <footer
+        style={{
+          backgroundColor: "#1a1a1a",
           color: "white",
-          py: { xs: 3, sm: 4, md: 6 },
-          mt: "auto",
+          padding: "48px 0",
+          marginTop: "auto",
         }}
-        component="footer"
       >
         <Container>
-          <Grid container spacing={{ xs: 3, sm: 3, md: 4 }}>
-            <Grid item xs={12} md={4}>
-              <Stack spacing={2}>
-                <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                  <DirectionsCar sx={{ color: "#1976d2" }} />
-                  <Typography variant="h6" fontWeight={600}>
+          <Row gutter={[32, 32]}>
+            <Col xs={24} md={8}>
+              <Space direction="vertical" size={16}>
+                <Space align="center">
+                  <DirectionsCar style={{ color: "#1976d2", fontSize: 24 }} />
+                  <Typography
+                    variant="h6"
+                    fontWeight={600}
+                    style={{ color: "white", margin: 0 }}
+                  >
                     Vũ Bách Auto
                   </Typography>
-                </Box>
-                <Box>
-                  <Stack direction="row" spacing={1} alignItems="center">
+                </Space>
+                <Space direction="vertical" size={8}>
+                  <Space align="center">
                     <EnvironmentOutlined style={{ color: "#1976d2" }} />
-                    <Typography variant="body2">
+                    <span style={{ color: "rgba(255,255,255,0.85)" }}>
                       177 Trường Chinh, Thành Phố Hải Dương
-                    </Typography>
-                  </Stack>
-                  <Stack
-                    direction="row"
-                    spacing={1}
-                    alignItems="center"
-                    sx={{ mt: 1 }}
-                  >
+                    </span>
+                  </Space>
+                  <Space align="center">
                     <PhoneOutlined style={{ color: "#1976d2" }} />
-                    <Typography variant="body2">
+                    <span style={{ color: "rgba(255,255,255,0.85)" }}>
                       Hotline: 0975 224 557
-                    </Typography>
-                  </Stack>
-                  <Stack
-                    direction="row"
-                    spacing={1}
-                    alignItems="center"
-                    sx={{ mt: 1 }}
-                  >
+                    </span>
+                  </Space>
+                  <Space align="center">
                     <MailOutlined style={{ color: "#1976d2" }} />
-                    <Typography variant="body2">
+                    <span style={{ color: "rgba(255,255,255,0.85)" }}>
                       contact@vubach-auto.com
-                    </Typography>
-                  </Stack>
-                </Box>
-              </Stack>
-            </Grid>
+                    </span>
+                  </Space>
+                </Space>
+              </Space>
+            </Col>
 
-            <Grid item xs={12} md={4}>
-              <Typography variant="h6" gutterBottom fontWeight={600}>
+            <Col xs={24} md={8}>
+              <Typography
+                variant="h6"
+                gutterBottom
+                fontWeight={600}
+                style={{ color: "white" }}
+              >
                 Dịch vụ
               </Typography>
-              <Stack spacing={1}>
-                <Typography variant="body2">✓ Mua bán xe ô tô cũ</Typography>
-                <Typography variant="body2">
+              <Space direction="vertical" size={8}>
+                <span style={{ color: "rgba(255,255,255,0.85)" }}>
+                  ✓ Mua bán xe ô tô cũ
+                </span>
+                <span style={{ color: "rgba(255,255,255,0.85)" }}>
                   ✓ Tư vấn chọn xe phù hợp
-                </Typography>
-                <Typography variant="body2">
+                </span>
+                <span style={{ color: "rgba(255,255,255,0.85)" }}>
                   ✓ Hỗ trợ thủ tục sang tên
-                </Typography>
-                <Typography variant="body2">
+                </span>
+                <span style={{ color: "rgba(255,255,255,0.85)" }}>
                   ✓ Vay trả góp lãi suất ưu đãi
-                </Typography>
-              </Stack>
-            </Grid>
+                </span>
+              </Space>
+            </Col>
 
-            <Grid item xs={12} md={4}>
-              <Typography variant="h6" gutterBottom fontWeight={600}>
+            <Col xs={24} md={8}>
+              <Typography
+                variant="h6"
+                gutterBottom
+                fontWeight={600}
+                style={{ color: "white" }}
+              >
                 Cam kết
               </Typography>
-              <Stack spacing={1}>
-                <Typography variant="body2">
+              <Space direction="vertical" size={8}>
+                <span style={{ color: "rgba(255,255,255,0.85)" }}>
                   ✓ Xe đã qua kiểm định chất lượng
-                </Typography>
-                <Typography variant="body2">
+                </span>
+                <span style={{ color: "rgba(255,255,255,0.85)" }}>
                   ✓ Giấy tờ pháp lý rõ ràng
-                </Typography>
-                <Typography variant="body2">✓ Bảo hành 6 tháng</Typography>
-                <Typography variant="body2">✓ Test xe thoải mái</Typography>
-              </Stack>
-            </Grid>
-          </Grid>
+                </span>
+                <span style={{ color: "rgba(255,255,255,0.85)" }}>
+                  ✓ Bảo hành 6 tháng
+                </span>
+                <span style={{ color: "rgba(255,255,255,0.85)" }}>
+                  ✓ Test xe thoải mái
+                </span>
+              </Space>
+            </Col>
+          </Row>
 
-          <Divider sx={{ my: 4, bgcolor: "rgba(255,255,255,0.1)" }} />
+          <Divider style={{ margin: "32px 0", backgroundColor: "rgba(255,255,255,0.1)" }} />
 
           <BottomNavigation
             sx={{
@@ -567,14 +521,13 @@ const HomePage: React.FC = () => {
             />
           </BottomNavigation>
 
-          <Typography
-            variant="body2"
-            sx={{ mt: 2, textAlign: "center", opacity: 0.7 }}
-          >
-            © 2024 Vũ Bách Auto. All rights reserved.
-          </Typography>
+          <div style={{ textAlign: "center", marginTop: 16, opacity: 0.7 }}>
+            <span style={{ color: "rgba(255,255,255,0.7)" }}>
+              © 2024 Vũ Bách Auto. All rights reserved.
+            </span>
+          </div>
         </Container>
-      </Paper>
+      </footer>
 
       {/* Floating buttons using Ant Design */}
       <FloatButton.Group

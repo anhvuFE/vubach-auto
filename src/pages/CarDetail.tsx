@@ -6,23 +6,24 @@ import {
   Typography,
   Box,
   Chip,
-  Button,
   Paper,
-  Divider,
-  List,
-  ListItem,
-  ListItemText,
-  ImageList,
-  ImageListItem,
   Dialog,
   IconButton,
   AppBar,
   Toolbar,
 } from "@mui/material";
-import { Carousel, Rate } from "antd";
+import {
+  Carousel,
+  Rate,
+  Card,
+  Statistic,
+  Space,
+  Button as AntButton,
+  Divider as AntDivider,
+  List as AntList
+} from "antd";
 import {
   ArrowBack,
-  Phone,
   CheckCircle,
   Speed,
   LocalGasStation,
@@ -36,6 +37,12 @@ import {
   Print,
   Share,
 } from "@mui/icons-material";
+import {
+  PhoneOutlined,
+  UserOutlined,
+  CheckCircleOutlined,
+  SafetyCertificateOutlined,
+} from "@ant-design/icons";
 import useCarStore from "@/store/carStore";
 
 const CarDetail: React.FC = () => {
@@ -61,12 +68,6 @@ const CarDetail: React.FC = () => {
     return null;
   }
 
-  const formatPrice = (price: number) => {
-    return new Intl.NumberFormat("vi-VN", {
-      style: "currency",
-      currency: "VND",
-    }).format(price);
-  };
 
   const formatMileage = (mileage: number) => {
     return new Intl.NumberFormat("vi-VN").format(mileage) + " km";
@@ -123,70 +124,91 @@ const CarDetail: React.FC = () => {
             <ArrowBack />
           </IconButton>
 
-          <Box sx={{ flexGrow: 1 }}>
+          <Box sx={{ flexGrow: 1, minWidth: 0 }}>
             <Typography
               variant="h5"
               component="div"
-              sx={{ color: "white", fontWeight: 600 }}
+              sx={{
+                color: "white",
+                fontWeight: 600,
+                fontSize: { xs: "1.1rem", sm: "1.25rem", md: "1.5rem" },
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+                whiteSpace: "nowrap",
+              }}
             >
               {car.brand} {car.model}
             </Typography>
-            <Typography variant="body2" sx={{ color: "rgba(255,255,255,0.9)" }}>
+            <Typography
+              variant="body2"
+              sx={{
+                color: "rgba(255,255,255,0.9)",
+                fontSize: { xs: "0.75rem", sm: "0.875rem" },
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+                whiteSpace: "nowrap",
+              }}
+            >
               {car.year} • {formatMileage(car.mileage)} • {car.fuelType}
             </Typography>
           </Box>
 
-          <Chip
-            label={car.condition}
-            sx={{
-              bgcolor: "rgba(255,255,255,0.9)",
-              color: "#667eea",
-              fontWeight: 600,
-              mr: 2,
-            }}
-          />
+          <Box sx={{ display: "flex", alignItems: "center", gap: 1, flexShrink: 0 }}>
+            <Chip
+              label={car.condition}
+              sx={{
+                bgcolor: "rgba(255,255,255,0.9)",
+                color: "#667eea",
+                fontWeight: 600,
+                fontSize: { xs: "0.75rem", sm: "0.875rem" },
+                height: { xs: 24, sm: 32 },
+                display: { xs: "none", sm: "flex" },
+              }}
+            />
 
-          <IconButton
-            sx={{
-              color: "white",
-              bgcolor: "rgba(255,255,255,0.2)",
-              "&:hover": {
-                bgcolor: "rgba(255,255,255,0.3)",
-              },
-            }}
-            onClick={() => window.print()}
-          >
-            <Print />
-          </IconButton>
+            <IconButton
+              size="small"
+              sx={{
+                color: "white",
+                bgcolor: "rgba(255,255,255,0.2)",
+                "&:hover": {
+                  bgcolor: "rgba(255,255,255,0.3)",
+                },
+              }}
+              onClick={() => window.print()}
+            >
+              <Print fontSize="small" />
+            </IconButton>
 
-          <IconButton
-            sx={{
-              color: "white",
-              bgcolor: "rgba(255,255,255,0.2)",
-              ml: 1,
-              "&:hover": {
-                bgcolor: "rgba(255,255,255,0.3)",
-              },
-            }}
-            onClick={() => {
-              if (navigator.share) {
-                navigator.share({
-                  title: `${car.brand} ${car.model}`,
-                  text: car.description,
-                  url: window.location.href,
-                });
-              }
-            }}
-          >
-            <Share />
-          </IconButton>
+            <IconButton
+              size="small"
+              sx={{
+                color: "white",
+                bgcolor: "rgba(255,255,255,0.2)",
+                "&:hover": {
+                  bgcolor: "rgba(255,255,255,0.3)",
+                },
+              }}
+              onClick={() => {
+                if (navigator.share) {
+                  navigator.share({
+                    title: `${car.brand} ${car.model}`,
+                    text: car.description,
+                    url: window.location.href,
+                  });
+                }
+              }}
+            >
+              <Share fontSize="small" />
+            </IconButton>
+          </Box>
         </Toolbar>
       </AppBar>
 
       <Container maxWidth="lg" sx={{ mt: 4 }}>
-        <Grid container spacing={4}>
+        <Grid container spacing={{ xs: 2, md: 3 }}>
           {/* Left Column - Images */}
-          <Grid item xs={12} md={8}>
+          <Grid item xs={12} md={7.5}>
             <Paper sx={{ overflow: "hidden" }}>
               {/* Main Image with Ant Design Carousel */}
               <Carousel autoplay>
@@ -198,7 +220,7 @@ const CarDetail: React.FC = () => {
                       alt={`${car.brand} ${car.model}`}
                       sx={{
                         width: "100%",
-                        height: 400,
+                        height: { xs: 250, sm: 350, md: 400 },
                         objectFit: "cover",
                         cursor: "pointer",
                       }}
@@ -210,23 +232,33 @@ const CarDetail: React.FC = () => {
 
               {/* Image Gallery */}
               {allImages.length > 1 && (
-                <ImageList sx={{ m: 2 }} cols={4} rowHeight={120}>
-                  {allImages.map((image, index) => (
-                    <ImageListItem key={index}>
-                      <img
-                        src={image}
-                        alt={`${car.brand} ${car.model} ${index + 1}`}
-                        loading="lazy"
-                        style={{
-                          cursor: "pointer",
-                          objectFit: "cover",
-                          height: "100%",
-                        }}
-                        onClick={() => handleImageClick(index)}
-                      />
-                    </ImageListItem>
-                  ))}
-                </ImageList>
+                <Box sx={{ p: 2 }}>
+                  <Grid container spacing={1}>
+                    {allImages.map((image, index) => (
+                      <Grid item xs={3} sm={3} md={3} key={index}>
+                        <Box
+                          component="img"
+                          src={image}
+                          alt={`${car.brand} ${car.model} ${index + 1}`}
+                          sx={{
+                            width: "100%",
+                            height: { xs: 60, sm: 80, md: 100 },
+                            objectFit: "cover",
+                            cursor: "pointer",
+                            borderRadius: 1,
+                            border: "2px solid transparent",
+                            transition: "all 0.2s",
+                            "&:hover": {
+                              borderColor: "#1976d2",
+                              transform: "scale(1.05)",
+                            },
+                          }}
+                          onClick={() => handleImageClick(index)}
+                        />
+                      </Grid>
+                    ))}
+                  </Grid>
+                </Box>
               )}
             </Paper>
 
@@ -468,7 +500,7 @@ const CarDetail: React.FC = () => {
                 </Grid>
               </Grid>
 
-              <Divider sx={{ my: 3 }} />
+              <AntDivider />
 
               <Typography variant="h6" gutterBottom fontWeight={600}>
                 Mô tả
@@ -536,120 +568,206 @@ const CarDetail: React.FC = () => {
             </Paper>
           </Grid>
 
-          {/* Right Column - Price and Contact */}
-          <Grid item xs={12} md={4}>
-            <Paper sx={{ p: 3, position: "sticky", top: 80 }}>
-              <Typography
-                variant="h4"
-                color="error"
-                gutterBottom
-                fontWeight={700}
-              >
-                {formatPrice(car.price)}
-              </Typography>
+          {/* Right Column - Price and Contact using Ant Design */}
+          <Grid item xs={12} md={4.5}>
+            <Card
+              style={{
+                position: "sticky",
+                top: 80,
+                boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
+              }}
+              bodyStyle={{ padding: "16px" }}
+            >
+              <Space direction="vertical" size="middle" style={{ width: "100%" }}>
+                {/* Price Section */}
+                <div style={{ textAlign: "center" }}>
+                  <Statistic
+                    value={car.price}
+                    precision={0}
+                    valueStyle={{
+                      color: "#dc2626",
+                      fontSize: "32px",
+                      fontWeight: 700,
+                    }}
+                    formatter={(value) =>
+                      new Intl.NumberFormat("vi-VN", {
+                        style: "currency",
+                        currency: "VND",
+                      }).format(Number(value))
+                    }
+                  />
+                </div>
 
-              <Box sx={{ mb: 2 }}>
-                <Typography variant="body2" sx={{ mb: 1 }}>
-                  Đánh giá chất lượng xe:
-                </Typography>
-                <Rate defaultValue={4.5} disabled allowHalf />
-              </Box>
+                {/* Rating Section */}
+                <div style={{ marginTop: "-8px" }}>
+                  <p style={{ marginBottom: 6, color: "#666", fontSize: "13px" }}>
+                    Đánh giá chất lượng xe:
+                  </p>
+                  <Rate defaultValue={4.5} disabled allowHalf size="small" />
+                </div>
 
-              <Box sx={{ display: "flex", gap: 1, flexWrap: "wrap", mb: 3 }}>
-                <Chip label={`Năm ${car.year}`} />
-                <Chip label={car.condition} color="success" />
-                {car.status === "available" ? (
-                  <Chip label="Còn hàng" color="primary" />
-                ) : car.status === "sold" ? (
-                  <Chip label="Đã bán" color="error" />
-                ) : (
-                  <Chip label="Đã đặt" color="warning" />
-                )}
-              </Box>
+                {/* Tags Section */}
+                <div style={{ marginTop: "-4px" }}>
+                  <Space wrap size="small">
+                    <span style={{
+                      background: "#f0f0f0",
+                      padding: "3px 10px",
+                      borderRadius: "12px",
+                      fontSize: "12px",
+                      color: "#666"
+                    }}>
+                      Năm {car.year}
+                    </span>
+                    <span style={{
+                      background: "#f6ffed",
+                      color: "#52c41a",
+                      padding: "3px 10px",
+                      borderRadius: "12px",
+                      fontSize: "12px",
+                      border: "1px solid #b7eb8f"
+                    }}>
+                      {car.condition}
+                    </span>
+                    <span style={{
+                      background: car.status === "available" ? "#e6f7ff" : car.status === "sold" ? "#fff2f0" : "#fff7e6",
+                      color: car.status === "available" ? "#1890ff" : car.status === "sold" ? "#ff4d4f" : "#fa8c16",
+                      padding: "3px 10px",
+                      borderRadius: "12px",
+                      fontSize: "12px",
+                      border: `1px solid ${car.status === "available" ? "#91d5ff" : car.status === "sold" ? "#ffb3b3" : "#ffd666"}`
+                    }}>
+                      {car.status === "available" ? "Còn hàng" : car.status === "sold" ? "Đã bán" : "Đã đặt"}
+                    </span>
+                  </Space>
+                </div>
 
-              <Divider sx={{ my: 2 }} />
+                <AntDivider style={{ margin: "12px 0" }} />
 
-              <Typography variant="h6" gutterBottom>
-                Liên hệ
-              </Typography>
+                {/* Contact Section */}
+                <div>
+                  <h4 style={{
+                    marginBottom: 12,
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 6,
+                    fontSize: "16px",
+                    fontWeight: 600,
+                    color: "#262626"
+                  }}>
+                    <UserOutlined style={{ color: "#1890ff" }} />
+                    Liên hệ
+                  </h4>
 
-              {car.contactName && (
-                <Typography variant="body1" gutterBottom>
-                  {car.contactName}
-                </Typography>
-              )}
+                  {car.contactName && (
+                    <div style={{
+                      marginBottom: 12,
+                      padding: "12px",
+                      background: "#f8f9fa",
+                      borderRadius: "8px",
+                      fontSize: "16px",
+                      fontWeight: 600,
+                      color: "#262626",
+                      textAlign: "center",
+                      border: "1px solid #e9ecef"
+                    }}>
+                      {car.contactName}
+                    </div>
+                  )}
 
-              <Box
-                sx={{ mt: 2, display: "flex", flexDirection: "column", gap: 2 }}
-              >
-                <Button
-                  variant="contained"
-                  color="primary"
-                  size="large"
-                  fullWidth
-                  startIcon={<Phone />}
-                  href={`tel:${car.contactPhone || "0975224557"}`}
-                >
-                  {car.contactPhone || "0975 224 557"}
-                </Button>
+                  <Space direction="vertical" size="small" style={{ width: "100%" }}>
+                    <AntButton
+                      type="primary"
+                      size="middle"
+                      block
+                      icon={<PhoneOutlined />}
+                      href={`tel:${car.contactPhone || "0975224557"}`}
+                      style={{
+                        height: "44px",
+                        fontSize: "15px",
+                        fontWeight: 600,
+                        borderRadius: "8px",
+                      }}
+                    >
+                      {car.contactPhone || "0975 224 557"}
+                    </AntButton>
 
-                <Button
-                  variant="contained"
-                  size="large"
-                  fullWidth
-                  sx={{
-                    background:
-                      "linear-gradient(45deg, #0088cc 30%, #00aaff 90%)",
-                    "&:hover": {
-                      background:
-                        "linear-gradient(45deg, #0077bb 30%, #0099ee 90%)",
-                    },
-                  }}
-                  onClick={() =>
-                    window.open(
-                      `https://zalo.me/${car.contactPhone || "0975224557"}`,
-                      "_blank",
-                    )
+                    <AntButton
+                      size="middle"
+                      block
+                      style={{
+                        height: "44px",
+                        fontSize: "15px",
+                        fontWeight: 600,
+                        background: "linear-gradient(135deg, #0068ff 0%, #0052cc 100%)",
+                        color: "white",
+                        border: "none",
+                        borderRadius: "8px",
+                      }}
+                      onClick={() =>
+                        window.open(
+                          `https://zalo.me/${car.contactPhone || "0975224557"}`,
+                          "_blank",
+                        )
+                      }
+                    >
+                      Chat qua Zalo
+                    </AntButton>
+
+                    <AntButton
+                      size="middle"
+                      block
+                      style={{
+                        height: "44px",
+                        fontSize: "15px",
+                        fontWeight: 600,
+                        borderColor: "#1877f2",
+                        color: "#1877f2",
+                        borderRadius: "8px",
+                        borderWidth: "1px",
+                      }}
+                      onClick={() =>
+                        window.open("https://m.me/vubachauto", "_blank")
+                      }
+                    >
+                      Chat qua Messenger
+                    </AntButton>
+                  </Space>
+                </div>
+
+                <AntDivider style={{ margin: "12px 0" }} />
+
+                {/* Commitment Section */}
+                <Card
+                  size="small"
+                  title={
+                    <span style={{ fontSize: "14px", fontWeight: 600 }}>
+                      <SafetyCertificateOutlined style={{ marginRight: 6, color: "#52c41a" }} />
+                      Cam kết của chúng tôi
+                    </span>
                   }
+                  style={{ backgroundColor: "#fafafa" }}
+                  bodyStyle={{ padding: "8px 12px" }}
                 >
-                  Chat qua Zalo
-                </Button>
-
-                <Button
-                  variant="outlined"
-                  size="large"
-                  fullWidth
-                  sx={{ borderColor: "#1877f2", color: "#1877f2" }}
-                  onClick={() =>
-                    window.open("https://m.me/vubachauto", "_blank")
-                  }
-                >
-                  Chat qua Messenger
-                </Button>
-              </Box>
-
-              <Divider sx={{ my: 3 }} />
-
-              <Box sx={{ bgcolor: "#f5f5f5", p: 2, borderRadius: 1 }}>
-                <Typography variant="subtitle2" gutterBottom fontWeight={600}>
-                  Cam kết của chúng tôi
-                </Typography>
-                <List dense>
-                  <ListItem disableGutters>
-                    <ListItemText primary="✓ Xe đã kiểm định chất lượng" />
-                  </ListItem>
-                  <ListItem disableGutters>
-                    <ListItemText primary="✓ Giấy tờ pháp lý đầy đủ" />
-                  </ListItem>
-                  <ListItem disableGutters>
-                    <ListItemText primary="✓ Bảo hành 6 tháng" />
-                  </ListItem>
-                  <ListItem disableGutters>
-                    <ListItemText primary="✓ Hỗ trợ trả góp lãi suất ưu đãi" />
-                  </ListItem>
-                </List>
-              </Box>
-            </Paper>
+                  <AntList
+                    size="small"
+                    dataSource={[
+                      "Xe đã kiểm định chất lượng",
+                      "Giấy tờ pháp lý đầy đủ",
+                      "Bảo hành 6 tháng",
+                      "Hỗ trợ trả góp lãi suất ưu đãi"
+                    ]}
+                    renderItem={(item: string) => (
+                      <AntList.Item style={{ padding: "2px 0", border: "none" }}>
+                        <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                          <CheckCircleOutlined style={{ color: "#52c41a", fontSize: "12px" }} />
+                          <span style={{ fontSize: "12px" }}>{item}</span>
+                        </div>
+                      </AntList.Item>
+                    )}
+                  />
+                </Card>
+              </Space>
+            </Card>
           </Grid>
         </Grid>
       </Container>
