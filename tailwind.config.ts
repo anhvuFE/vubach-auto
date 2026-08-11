@@ -10,22 +10,23 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // Brand palette: charcoal / white / gray with red accent
+        // Brand palette: deep charcoal / white / gray with navy-blue accent
         brand: {
-          DEFAULT: '#e11d2a',
-          dark: '#b0141f',
-          light: '#ff3b47',
+          DEFAULT: '#2563eb',
+          dark: '#1d4ed8',
+          light: '#60a5fa',
         },
         charcoal: {
-          DEFAULT: '#111418',
-          soft: '#1c2127',
-          muted: '#2a2f36',
+          DEFAULT: '#0f1720',
+          soft: '#18212e',
+          muted: '#243141',
         },
-        ink: '#0b0d10',
+        ink: '#0a0f16',
       },
       fontFamily: {
         sans: ['var(--font-sans)', 'system-ui', 'sans-serif'],
         display: ['var(--font-display)', 'var(--font-sans)', 'sans-serif'],
+        serif: ['var(--font-serif)', 'Georgia', 'serif'],
       },
       boxShadow: {
         card: '0 4px 20px rgba(15, 23, 42, 0.08)',

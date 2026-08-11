@@ -7,7 +7,9 @@ export default function SimilarCars({ cars }: { cars: Car[] }) {
   return (
     <section className="section bg-gray-50">
       <div className="container-page">
-        <h2 className="font-display text-2xl font-bold text-charcoal sm:text-3xl">Xe tương tự</h2>
+        <h2 className="font-serif text-3xl font-bold tracking-tight text-charcoal sm:text-4xl">
+          Xe tương tự
+        </h2>
         <p className="mt-2 text-gray-500">Các mẫu xe cùng phân khúc bạn có thể quan tâm.</p>
         <div className="mt-8 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {cars.map((car) => (

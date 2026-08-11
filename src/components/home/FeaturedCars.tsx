@@ -9,18 +9,26 @@ export default function FeaturedCars() {
   const cars = getFeaturedCars(6);
 
   return (
-    <section className="section bg-gray-50">
-      <div className="container-page">
+    <section className="section relative overflow-hidden bg-charcoal">
+      <div
+        className="absolute inset-0 opacity-[0.5]"
+        style={{
+          backgroundImage:
+            'radial-gradient(circle at 15% 0%, rgba(37,99,235,0.18) 0, transparent 45%)',
+        }}
+      />
+      <div className="container-page relative">
         <div className="flex flex-col items-center justify-between gap-6 sm:flex-row sm:items-end">
           <SectionHeading
             align="left"
+            variant="light"
             eyebrow="Xe nổi bật"
             title="Những mẫu xe được lựa chọn"
             description="Tuyển chọn các mẫu xe chất lượng cao, đã qua kiểm định kỹ lưỡng, sẵn sàng bàn giao."
           />
           <Link
             href="/cars"
-            className="hidden shrink-0 items-center gap-2 rounded-lg border border-charcoal/15 px-5 py-2.5 text-sm font-bold text-charcoal transition-colors hover:border-brand hover:text-brand sm:flex"
+            className="hidden shrink-0 items-center gap-2 rounded-lg border border-white/20 px-5 py-2.5 text-sm font-bold text-white transition-colors hover:border-brand-light hover:text-brand-light sm:flex"
           >
             Xem tất cả <ArrowRightOutlined />
           </Link>

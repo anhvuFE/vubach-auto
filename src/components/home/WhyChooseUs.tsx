@@ -37,7 +37,7 @@ export default function WhyChooseUs() {
             <span className="h-px w-6 bg-brand" />
             Vì sao chọn chúng tôi
           </span>
-          <h2 className="mt-3 font-display text-3xl font-extrabold text-charcoal sm:text-4xl">
+          <h2 className="mt-3 font-serif text-4xl font-bold tracking-tight text-charcoal sm:text-5xl">
             Đối tác tin cậy cho chiếc xe của bạn
           </h2>
           <p className="mt-4 text-base leading-relaxed text-gray-500">

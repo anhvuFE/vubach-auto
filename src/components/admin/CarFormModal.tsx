@@ -101,7 +101,7 @@ export default function CarFormModal({ open, car, onCancel, onSubmit }: CarFormM
       okText={car ? 'Lưu thay đổi' : 'Thêm xe'}
       cancelText="Huỷ"
       width={760}
-      okButtonProps={{ style: { background: '#e11d2a' } }}
+      okButtonProps={{ style: { background: '#2563eb' } }}
       styles={{ body: { maxHeight: '70vh', overflowY: 'auto' } }}
     >
       <Form form={form} layout="vertical" requiredMark={false} className="mt-4">
