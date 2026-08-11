@@ -49,7 +49,7 @@ export default function QuickView({ car }: { car: Car }) {
         type="button"
         onClick={openModal}
         aria-label="Xem nhanh"
-        className="flex items-center gap-1.5 rounded-full bg-white/90 px-3 py-1.5 text-xs font-bold text-charcoal shadow-md backdrop-blur transition-transform hover:scale-105"
+        className="pointer-events-auto flex items-center gap-1.5 rounded-full bg-white/90 px-3 py-1.5 text-xs font-bold text-charcoal shadow-md transition-transform hover:scale-105"
       >
         <EyeOutlined /> Xem nhanh
       </button>
@@ -76,6 +76,7 @@ export default function QuickView({ car }: { car: Car }) {
                 className="animate-fade-in object-cover"
               />
               <StatusBadge status={car.status} className="absolute left-3 top-3" />
+              <FavoriteButton carId={car.id} className="absolute bottom-3 right-3" />
             </div>
             {images.length > 1 && (
               <div className="scrollbar-thin mt-3 flex gap-2 overflow-x-auto">
@@ -96,17 +97,14 @@ export default function QuickView({ car }: { car: Car }) {
           </div>
 
           {/* Info */}
-          <div className="flex flex-col p-5 sm:p-6">
-            <div className="flex items-start justify-between gap-3">
-              <div>
-                <p className="text-xs font-semibold uppercase tracking-wide text-brand">
-                  {car.brand} · {car.bodyType}
-                </p>
-                <h3 className="mt-1 font-display text-xl font-extrabold text-charcoal">
-                  {carDisplayName(car)} {car.year}
-                </h3>
-              </div>
-              <FavoriteButton carId={car.id} />
+          <div className="flex flex-col p-5 pr-10 sm:p-6 sm:pr-6">
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-wide text-brand">
+                {car.brand} · {car.bodyType}
+              </p>
+              <h3 className="mt-1 font-display text-xl font-extrabold text-charcoal">
+                {carDisplayName(car)} {car.year}
+              </h3>
             </div>
 
             <p className="mt-2 font-display text-2xl font-extrabold text-brand">
