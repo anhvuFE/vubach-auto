@@ -48,6 +48,11 @@ function collectErrors(page: Page) {
   return { jsErrors, consoleErrors };
 }
 
+// Block the Google Maps embed so the `load` event isn't held up by a 3rd party.
+test.beforeEach(async ({ page }) => {
+  await page.route(/google\.com\/maps|maps\.google/, (r) => r.abort());
+});
+
 const ROUTES = [
   { path: '/', name: 'home' },
   { path: '/cars', name: 'cars' },

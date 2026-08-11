@@ -7,7 +7,7 @@ export default function SimilarCars({ cars }: { cars: Car[] }) {
   return (
     <section className="section bg-gray-50">
       <div className="container-page">
-        <h2 className="font-serif text-3xl font-bold tracking-tight text-charcoal sm:text-4xl">
+        <h2 className="font-display text-3xl font-bold tracking-tight text-charcoal sm:text-4xl">
           Xe tương tự
         </h2>
         <p className="mt-2 text-gray-500">Các mẫu xe cùng phân khúc bạn có thể quan tâm.</p>

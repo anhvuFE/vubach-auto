@@ -22,21 +22,24 @@ export default function SectionHeading({
   const titleColor = variant === 'light' ? 'text-white' : 'text-charcoal';
   const descColor = variant === 'light' ? 'text-white/70' : 'text-gray-500';
 
+  const eyebrowColor = variant === 'light' ? 'text-white/50' : 'text-gray-400';
+
   return (
     <Reveal
-      className={`flex flex-col gap-3 ${isCenter ? 'items-center text-center' : 'items-start text-left'} ${className}`}
+      className={`flex flex-col ${isCenter ? 'items-center text-center' : 'items-start text-left'} ${className}`}
     >
       {eyebrow && (
-        <span className="inline-flex items-center gap-2 text-sm font-semibold uppercase tracking-[0.2em] text-brand">
-          <span className="h-px w-6 bg-brand" />
+        <span className={`text-xs font-semibold uppercase tracking-[0.25em] ${eyebrowColor}`}>
           {eyebrow}
         </span>
       )}
-      <h2 className={`font-serif text-4xl font-bold tracking-tight sm:text-5xl ${titleColor}`}>
+      <h2
+        className={`mt-3 font-display text-4xl font-extrabold leading-[1.05] tracking-tight sm:text-5xl ${titleColor}`}
+      >
         {title}
       </h2>
       {description && (
-        <p className={`max-w-2xl text-base leading-relaxed ${descColor}`}>{description}</p>
+        <p className={`mt-4 max-w-xl text-base leading-relaxed ${descColor}`}>{description}</p>
       )}
     </Reveal>
   );

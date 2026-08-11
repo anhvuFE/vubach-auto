@@ -33,10 +33,10 @@ export default function HeroSection() {
             Showroom ô tô đã qua sử dụng uy tín
           </span>
 
-          <h1 className="mt-6 font-serif text-6xl font-bold leading-[1.02] tracking-tight text-white sm:text-7xl lg:text-8xl">
+          <h1 className="mt-6 font-display text-6xl font-bold leading-[1.02] tracking-tight text-white sm:text-7xl lg:text-8xl">
             VŨ BÁCH <span className="text-brand-light">AUTO</span>
           </h1>
-          <p className="mt-5 max-w-xl font-serif text-xl italic text-white/80 sm:text-2xl">
+          <p className="mt-5 max-w-md text-base leading-relaxed text-white/70 sm:text-lg">
             {SITE.tagline}
           </p>
 

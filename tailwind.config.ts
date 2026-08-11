@@ -26,16 +26,15 @@ const config: Config = {
       fontFamily: {
         sans: ['var(--font-sans)', 'system-ui', 'sans-serif'],
         display: ['var(--font-display)', 'var(--font-sans)', 'sans-serif'],
-        serif: ['var(--font-serif)', 'Georgia', 'serif'],
       },
       boxShadow: {
-        card: '0 4px 20px rgba(15, 23, 42, 0.08)',
-        'card-hover': '0 18px 40px rgba(15, 23, 42, 0.16)',
-        header: '0 2px 16px rgba(0, 0, 0, 0.08)',
+        card: '0 1px 2px rgba(15, 23, 42, 0.04)',
+        'card-hover': '0 16px 40px rgba(15, 23, 42, 0.12)',
+        header: '0 1px 0 rgba(15, 23, 42, 0.08)',
       },
       borderRadius: {
-        xl: '14px',
-        '2xl': '20px',
+        xl: '10px',
+        '2xl': '12px',
       },
       maxWidth: {
         container: '1280px',

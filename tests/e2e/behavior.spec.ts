@@ -10,6 +10,11 @@ const statuses = (page: Page) =>
 const desktopOnly = (name: string) =>
   test.skip(name !== 'desktop', 'Uses the desktop sidebar/toolbar');
 
+// Block the Google Maps embed so the `load` event isn't held up by a 3rd party.
+test.beforeEach(async ({ page }) => {
+  await page.route(/google\.com\/maps|maps\.google/, (r) => r.abort());
+});
+
 // ─────────────────────────── Filtering / sorting ───────────────────────────
 
 test('URL query pre-filters the grid by brand', async ({ page }) => {
@@ -28,8 +33,11 @@ test('Status filter shows only sold cars', async ({ page }, info) => {
   await page.goto('/cars', { waitUntil: 'load' });
 
   const soldTab = page.locator('aside .ant-segmented-item').filter({ hasText: 'Đã bán' });
-  await soldTab.click();
-  await expect(soldTab).toHaveClass(/ant-segmented-item-selected/);
+  // The sliding thumb animation can swallow a click, so retry until selected.
+  await expect(async () => {
+    await soldTab.click();
+    await expect(soldTab).toHaveClass(/ant-segmented-item-selected/, { timeout: 1500 });
+  }).toPass({ timeout: 8000 });
   await expect(async () => {
     const s = await statuses(page);
     expect(s.length).toBeGreaterThan(0);

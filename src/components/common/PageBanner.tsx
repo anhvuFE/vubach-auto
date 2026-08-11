@@ -25,11 +25,7 @@ export default function PageBanner({ title, description, crumbs = [], image }: P
         // eslint-disable-next-line @next/next/no-img-element
         <img src={image} alt="" className="absolute inset-0 h-full w-full object-cover opacity-25" />
       )}
-      <div className="absolute inset-0 bg-gradient-to-r from-ink via-ink/90 to-ink/60" />
-      <div
-        className="absolute inset-0 opacity-[0.07]"
-        style={{ backgroundImage: 'radial-gradient(circle at 85% 20%, #2563eb 0, transparent 45%)' }}
-      />
+      <div className="absolute inset-0 bg-gradient-to-r from-ink via-ink/95 to-ink/70" />
       <div className="container-page relative">
         <nav className="flex flex-wrap items-center gap-1.5 text-sm text-white/60">
           <Link href="/" className="flex items-center gap-1 transition-colors hover:text-white">
@@ -49,7 +45,7 @@ export default function PageBanner({ title, description, crumbs = [], image }: P
           ))}
         </nav>
 
-        <h1 className="mt-4 font-serif text-4xl font-bold tracking-tight text-white sm:text-5xl lg:text-6xl">
+        <h1 className="mt-4 font-display text-4xl font-bold tracking-tight text-white sm:text-5xl lg:text-6xl">
           {title}
         </h1>
         {description && <p className="mt-3 max-w-2xl text-base text-white/70">{description}</p>}

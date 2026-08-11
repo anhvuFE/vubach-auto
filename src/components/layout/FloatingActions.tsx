@@ -41,9 +41,6 @@ export default function FloatingActions() {
           aria-label={action.label}
           className={`group relative flex h-12 w-12 items-center justify-center rounded-full text-lg text-white shadow-lg transition-transform hover:scale-110 ${action.className}`}
         >
-          {action.pulse && (
-            <span className="absolute inset-0 animate-ping rounded-full bg-brand/60" />
-          )}
           <span className="relative">{action.icon}</span>
           <span className="pointer-events-none absolute right-14 whitespace-nowrap rounded-md bg-charcoal px-2.5 py-1 text-xs font-semibold text-white opacity-0 shadow-md transition-opacity group-hover:opacity-100">
             {action.label}

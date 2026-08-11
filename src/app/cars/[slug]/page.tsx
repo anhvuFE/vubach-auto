@@ -89,7 +89,7 @@ export default async function CarDetailPage({ params }: { params: Params }) {
               <p className="text-sm font-semibold uppercase tracking-wide text-brand">
                 {car.brand} · {car.bodyType}
               </p>
-              <h1 className="mt-1 font-serif text-4xl font-bold tracking-tight text-charcoal sm:text-5xl">
+              <h1 className="mt-1 font-display text-4xl font-bold tracking-tight text-charcoal sm:text-5xl">
                 {carDisplayName(car)} {car.year}
               </h1>
 
