@@ -14,10 +14,12 @@ import CarGallery from '@/components/cars/CarGallery';
 import CarContactCard from '@/components/cars/CarContactCard';
 import CarSpecs from '@/components/cars/CarSpecs';
 import SimilarCars from '@/components/cars/SimilarCars';
+import JsonLd from '@/components/common/JsonLd';
 import { CARS, getCarBySlug, getSimilarCars } from '@/data/cars';
 import { carDisplayName } from '@/types/car';
 import { formatMileage } from '@/utils/format';
 import { SITE } from '@/constants/site';
+import { vehicleSchema, breadcrumbSchema } from '@/lib/jsonLd';
 
 type Params = Promise<{ slug: string }>;
 
@@ -37,6 +39,7 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
   return {
     title,
     description,
+    alternates: { canonical: `/cars/${car.slug}` },
     openGraph: {
       title: `${title} | ${SITE.name}`,
       description,
@@ -52,6 +55,12 @@ export default async function CarDetailPage({ params }: { params: Params }) {
   if (!car) notFound();
 
   const similar = getSimilarCars(car);
+  const breadcrumb = breadcrumbSchema([
+    { name: 'Trang chủ', path: '/' },
+    { name: 'Xe đang bán', path: '/cars' },
+    { name: `${carDisplayName(car)} ${car.year}`, path: `/cars/${car.slug}` },
+  ]);
+
   const quickSpecs = [
     { icon: <CalendarOutlined />, label: 'Năm SX', value: String(car.year) },
     { icon: <DashboardOutlined />, label: 'Số km', value: formatMileage(car.mileage) },
@@ -62,6 +71,8 @@ export default async function CarDetailPage({ params }: { params: Params }) {
 
   return (
     <>
+      <JsonLd data={[vehicleSchema(car), breadcrumb]} />
+
       {/* Breadcrumb bar (clears fixed header) */}
       <div className="border-b border-gray-100 bg-white pt-24 sm:pt-28">
         <div className="container-page py-4">

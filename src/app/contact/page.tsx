@@ -12,6 +12,7 @@ import { SITE } from '@/constants/site';
 export const metadata: Metadata = {
   title: 'Liên hệ',
   description: `Liên hệ Vũ Bách Auto - Hotline ${SITE.hotline}. Địa chỉ: ${SITE.address}. Chúng tôi luôn sẵn sàng tư vấn và hỗ trợ bạn.`,
+  alternates: { canonical: '/contact' },
 };
 
 const infoCards = [
