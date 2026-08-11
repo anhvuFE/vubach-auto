@@ -120,9 +120,11 @@ test('Test-drive form: validates then submits successfully', async ({ page }) =>
   const modal = page.locator('.ant-modal-content');
   await expect(modal).toBeVisible();
 
-  // Empty submit → validation error.
-  await modal.getByRole('button', { name: 'Gửi yêu cầu' }).click();
-  await expect(modal.getByText('Vui lòng nhập họ tên')).toBeVisible();
+  // Empty submit → validation error (retry to avoid a pre-hydration click).
+  await expect(async () => {
+    await modal.getByRole('button', { name: 'Gửi yêu cầu' }).click();
+    await expect(modal.getByText('Vui lòng nhập họ tên')).toBeVisible({ timeout: 1000 });
+  }).toPass({ timeout: 8000 });
 
   await modal.getByPlaceholder('Nguyễn Văn A').fill('Nguyễn Văn A');
   await modal.getByPlaceholder('09xxxxxxxx').fill('0912345678');
@@ -137,8 +139,13 @@ test('Contact form: validates required fields then submits', async ({ page }) =>
   await page.goto('/contact', { waitUntil: 'load' });
 
   const form = page.locator('form');
-  await form.getByRole('button', { name: 'Gửi yêu cầu' }).click();
-  await expect(page.getByText('Vui lòng nhập họ tên')).toBeVisible();
+  const submit = form.getByRole('button', { name: 'Gửi yêu cầu' });
+  // Retry the empty submit until the (client-validated) error appears — guards
+  // against clicking before the form has hydrated.
+  await expect(async () => {
+    await submit.click();
+    await expect(page.getByText('Vui lòng nhập họ tên')).toBeVisible({ timeout: 1000 });
+  }).toPass({ timeout: 8000 });
 
   await form.getByPlaceholder('Nguyễn Văn A').fill('Trần B');
   await form.getByPlaceholder('09xxxxxxxx').fill('0987654321');
