@@ -8,6 +8,7 @@ export const metadata: Metadata = {
   title: 'Xe đang bán',
   description:
     'Danh sách ô tô đã qua sử dụng đang bán tại Vũ Bách Auto. Lọc theo hãng, giá, năm sản xuất, số km, nhiên liệu và hộp số.',
+  alternates: { canonical: '/cars' },
 };
 
 type SearchParams = Promise<Record<string, string | string[] | undefined>>;

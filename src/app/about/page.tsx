@@ -14,6 +14,7 @@ export const metadata: Metadata = {
   title: 'Giới thiệu',
   description:
     'Vũ Bách Auto - hơn 10 năm kinh nghiệm trong lĩnh vực mua bán ô tô đã qua sử dụng. Uy tín tạo niềm tin, chất lượng tạo giá trị.',
+  alternates: { canonical: '/about' },
 };
 
 const STORY_IMAGE =

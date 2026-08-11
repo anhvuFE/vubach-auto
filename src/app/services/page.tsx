@@ -12,6 +12,7 @@ export const metadata: Metadata = {
   title: 'Dịch vụ',
   description:
     'Dịch vụ tại Vũ Bách Auto: mua bán xe cũ, thu mua xe, ký gửi, định giá, hỗ trợ trả góp, sang tên và kiểm định xe.',
+  alternates: { canonical: '/services' },
 };
 
 const STEPS = [

@@ -6,11 +6,15 @@ import Providers from '@/providers/Providers';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import FloatingActions from '@/components/layout/FloatingActions';
+import JsonLd from '@/components/common/JsonLd';
+import { autoDealerSchema, websiteSchema } from '@/lib/jsonLd';
 import './globals.css';
 
 const beVietnam = Be_Vietnam_Pro({
   subsets: ['latin', 'vietnamese'],
-  weight: ['300', '400', '500', '600', '700'],
+  // Only the weights actually used: 400 (body) + 500/600/700 (font-medium/
+  // semibold/bold). Dropping the unused 300 trims one font file per subset.
+  weight: ['400', '500', '600', '700'],
   variable: '--font-sans',
   display: 'swap',
 });
@@ -29,6 +33,7 @@ export const metadata: Metadata = {
     template: `%s | ${SITE.name}`,
   },
   description: SITE.description,
+  alternates: { canonical: '/' },
   keywords: [
     'mua bán ô tô cũ',
     'xe cũ',
@@ -66,6 +71,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="vi" className={`${beVietnam.variable} ${lexend.variable}`}>
       <body>
+        <JsonLd data={[autoDealerSchema(), websiteSchema()]} />
         <Providers>
           <div className="flex min-h-screen flex-col">
             <Suspense fallback={null}>
