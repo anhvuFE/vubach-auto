@@ -9,15 +9,8 @@ export default function FeaturedCars() {
   const cars = getFeaturedCars(6);
 
   return (
-    <section className="section relative overflow-hidden bg-charcoal">
-      <div
-        className="absolute inset-0 opacity-[0.5]"
-        style={{
-          backgroundImage:
-            'radial-gradient(circle at 15% 0%, rgba(37,99,235,0.18) 0, transparent 45%)',
-        }}
-      />
-      <div className="container-page relative">
+    <section className="section bg-charcoal">
+      <div className="container-page">
         <div className="flex flex-col items-center justify-between gap-6 sm:flex-row sm:items-end">
           <SectionHeading
             align="left"

@@ -48,6 +48,35 @@ const withMain = (images: readonly string[]): Pick<Car, 'images' | 'mainImage'> 
   mainImage: images[0],
 });
 
+/**
+ * Varied stock photos for cars without a model-specific image, so the listing
+ * looks like a real, diverse inventory instead of the same photo repeated.
+ */
+const unsplash = (id: string) =>
+  `https://images.unsplash.com/${id}?auto=format&fit=crop&w=900&q=70`;
+
+const POOL: string[] = [
+  'photo-1552519507-da3b142c6e3d',
+  'photo-1494905998402-395d579af36f',
+  'photo-1503376780353-7e6692767b70',
+  'photo-1542362567-b07e54358753',
+  'photo-1583121274602-3e2820c69888',
+  'photo-1502877338535-766e1452684a',
+  'photo-1605559424843-9e4c228bf1c2',
+  'photo-1494976388531-d1058494cdd8',
+  'photo-1606664515524-ed2f786a0bd6',
+  'photo-1568605117036-5fe5e7bab0b7',
+  'photo-1550355291-bbee04a92027',
+  'photo-1580273916550-e323be2ae537',
+].map(unsplash);
+
+/** Pick two distinct pool images for the car at `index` (deterministic). */
+const poolImages = (index: number): Pick<Car, 'images' | 'mainImage'> => {
+  const a = POOL[index % POOL.length];
+  const b = POOL[(index + 5) % POOL.length];
+  return { images: [a, b], mainImage: a };
+};
+
 const SEEDS: CarSeed[] = [
   {
     brand: 'Toyota',
@@ -694,8 +723,11 @@ const buildCars = (seeds: CarSeed[]): Car[] =>
     const id = `car-${String(index + 1).padStart(2, '0')}`;
     // Newer index = listed more recently, so featured/newest sort is sensible.
     const createdAt = new Date(BASE_DATE + index * DAY).toISOString();
+    // Give generic-photo cars a varied image so the grid doesn't look templated.
+    const isGeneric = seed.mainImage === IMG.generic[0];
     return {
       ...seed,
+      ...(isGeneric ? poolImages(index) : {}),
       id,
       slug: buildCarSlug({ brand: seed.brand, model: seed.model, year: seed.year, id }),
       createdAt,

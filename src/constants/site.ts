@@ -11,13 +11,13 @@ export const SITE = {
   hotline: process.env.NEXT_PUBLIC_HOTLINE ?? '0975224557',
   zalo: process.env.NEXT_PUBLIC_ZALO ?? '0975224557',
   email: process.env.NEXT_PUBLIC_EMAIL ?? 'lienhe@vubachauto.vn',
-  address: 'Số 1 Đại lộ Thăng Long, Nam Từ Liêm, Hà Nội',
+  address: '117 Trường Chinh, Lê Thanh Nghị, Hải Phòng',
   workingHours: '8:00 – 19:00 (T2 – CN)',
   owner: 'Mr. Vũ Bách',
   facebook: 'https://facebook.com',
   messenger: 'https://m.me/vubachauto',
   mapEmbed:
-    'https://www.google.com/maps?q=Nam+Tu+Liem+Ha+Noi&output=embed',
+    'https://www.google.com/maps?q=117+Truong+Chinh+Le+Thanh+Nghi+Hai+Phong&output=embed',
 } as const;
 
 export const NAV_ITEMS: NavItem[] = [
