@@ -1,18 +1,12 @@
 'use client';
 
-import { useEffect, useState } from 'react';
 import { PhoneOutlined, MessageOutlined, UpOutlined } from '@ant-design/icons';
 import { SITE } from '@/constants/site';
+import { useScrollThreshold } from '@/hooks/useScrollThreshold';
 
 /** Sticky floating contact buttons (phone / Zalo / Messenger) + back-to-top. */
 export default function FloatingActions() {
-  const [showTop, setShowTop] = useState(false);
-
-  useEffect(() => {
-    const onScroll = () => setShowTop(window.scrollY > 480);
-    window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
-  }, []);
+  const showTop = useScrollThreshold(480);
 
   const actions = [
     {

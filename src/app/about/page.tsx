@@ -17,7 +17,7 @@ export const metadata: Metadata = {
 };
 
 const STORY_IMAGE =
-  'https://images.unsplash.com/photo-1567818735868-e71b99932e29?auto=format&fit=crop&w=1400&q=80';
+  'https://images.unsplash.com/photo-1567818735868-e71b99932e29?auto=format&fit=crop&w=1000&q=70';
 
 export default function AboutPage() {
   return (

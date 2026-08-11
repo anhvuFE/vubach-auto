@@ -5,7 +5,7 @@ import HeroSearch from './HeroSearch';
 import { SITE } from '@/constants/site';
 
 const HERO_IMAGE =
-  'https://images.unsplash.com/photo-1503736334956-4c8f8e92946d?auto=format&fit=crop&w=2100&q=80';
+  'https://images.unsplash.com/photo-1503736334956-4c8f8e92946d?auto=format&fit=crop&w=1600&q=70';
 
 const highlights = ['Xe kiểm định 100%', 'Hỗ trợ trả góp 80%', 'Sang tên nhanh chóng'];
 
@@ -18,6 +18,7 @@ export default function HeroSection() {
         alt="Showroom ô tô Vũ Bách Auto"
         fill
         priority
+        quality={70}
         sizes="100vw"
         className="object-cover"
       />

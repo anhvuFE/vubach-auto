@@ -1,6 +1,5 @@
 'use client';
 
-import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Drawer } from 'antd';
@@ -9,24 +8,18 @@ import Logo from '@/components/common/Logo';
 import { NAV_ITEMS, SITE } from '@/constants/site';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { setMobileMenu } from '@/store/slices/uiSlice';
+import { useScrollThreshold } from '@/hooks/useScrollThreshold';
 
 export default function Header() {
   const pathname = usePathname();
   const dispatch = useAppDispatch();
   const mobileMenuOpen = useAppSelector((s) => s.ui.mobileMenuOpen);
   const favoriteCount = useAppSelector((s) => s.favorite.ids.length);
-  const [scrolled, setScrolled] = useState(false);
+  const scrolled = useScrollThreshold(24);
 
   // Transparent overlay only on the homepage hero; solid everywhere else.
   const isHome = pathname === '/';
   const transparent = isHome && !scrolled;
-
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 24);
-    onScroll();
-    window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
-  }, []);
 
   const closeMenu = () => dispatch(setMobileMenu(false));
 
@@ -38,10 +31,8 @@ export default function Header() {
 
   return (
     <header
-      className={`fixed inset-x-0 top-0 z-[1000] transition-all duration-300 ${
-        transparent
-          ? 'bg-transparent py-4'
-          : 'bg-white/95 py-2.5 shadow-header backdrop-blur-md'
+      className={`fixed inset-x-0 top-0 z-[1000] transition-[background-color,box-shadow,padding] duration-300 will-change-transform ${
+        transparent ? 'bg-transparent py-4' : 'bg-white py-2.5 shadow-header'
       }`}
     >
       <div className="container-page flex items-center justify-between gap-4">

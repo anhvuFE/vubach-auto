@@ -31,6 +31,7 @@ export default function CarImage({ src, alt, className, ...rest }: CarImageProps
     <Image
       src={src}
       alt={alt}
+      quality={70}
       className={className}
       onError={() => setErrored(true)}
       {...rest}
