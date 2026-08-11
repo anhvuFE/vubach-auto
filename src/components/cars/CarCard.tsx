@@ -61,7 +61,7 @@ export default function CarCard({ car, layout = 'grid', priority = false }: CarC
           </span>
         </div>
         <FavoriteButton carId={car.id} className="absolute right-3 top-3" />
-        <div className="absolute inset-0 flex items-center justify-center opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+        <div className="pointer-events-none absolute inset-0 flex items-center justify-center opacity-0 transition-opacity duration-300 group-hover:opacity-100">
           <QuickView car={car} />
         </div>
         <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-charcoal/80 to-transparent p-3">

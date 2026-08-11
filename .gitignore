@@ -22,6 +22,11 @@ next-env.d.ts
 dist
 dist-ssr
 
+# Playwright
+/playwright-report
+/test-results
+/blob-report
+
 # Misc
 *.local
 .DS_Store
