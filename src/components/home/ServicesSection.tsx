@@ -1,7 +1,6 @@
 import Link from 'next/link';
 import { ArrowRightOutlined } from '@ant-design/icons';
 import SectionHeading from '@/components/common/SectionHeading';
-import Reveal from '@/components/common/Reveal';
 import DynamicIcon from '@/components/common/DynamicIcon';
 import { SERVICES } from '@/constants/content';
 
@@ -10,34 +9,45 @@ export default function ServicesSection() {
     <section className="section bg-white">
       <div className="container-page">
         <SectionHeading
+          align="left"
           eyebrow="Dịch vụ"
           title="Giải pháp toàn diện cho xe của bạn"
           description="Từ mua bán, thu mua, ký gửi đến hỗ trợ tài chính và pháp lý — tất cả trong một điểm đến."
         />
 
-        <div className="mt-12 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        <div className="mt-12 grid md:grid-cols-2 md:gap-x-16">
           {SERVICES.map((service, i) => (
-            <Reveal key={service.title} delay={(i % 4) * 0.06}>
-              <Link
-                href="/services"
-                className="group flex h-full flex-col rounded-2xl border border-gray-100 bg-white p-6 shadow-card transition-all duration-300 hover:-translate-y-1 hover:border-brand/30 hover:shadow-card-hover"
-              >
-                <span className="flex h-14 w-14 items-center justify-center rounded-xl bg-brand/10 text-2xl text-brand transition-colors duration-300 group-hover:bg-brand group-hover:text-white">
-                  <DynamicIcon name={service.icon} />
-                </span>
-                <h3 className="mt-5 font-display text-lg font-bold text-charcoal">
-                  {service.title}
-                </h3>
-                <p className="mt-2 flex-1 text-sm leading-relaxed text-gray-500">
-                  {service.description}
-                </p>
-                <span className="mt-4 flex items-center gap-1.5 text-sm font-bold text-brand">
-                  Tìm hiểu thêm
-                  <ArrowRightOutlined className="transition-transform group-hover:translate-x-1" />
-                </span>
-              </Link>
-            </Reveal>
+            <Link
+              key={service.title}
+              href="/services"
+              className="group flex items-start gap-5 border-t border-gray-200 py-7 transition-colors hover:border-charcoal sm:gap-6"
+            >
+              <span className="pt-1 font-display text-xl font-bold tabular-nums text-gray-300 transition-colors group-hover:text-brand">
+                {String(i + 1).padStart(2, '0')}
+              </span>
+              <div className="flex-1">
+                <div className="flex items-center gap-2.5">
+                  <DynamicIcon name={service.icon} className="text-lg text-brand" />
+                  <h3 className="font-display text-lg font-bold text-charcoal sm:text-xl">
+                    {service.title}
+                  </h3>
+                </div>
+                <p className="mt-2 text-sm leading-relaxed text-gray-500">{service.description}</p>
+              </div>
+              <ArrowRightOutlined className="mt-1.5 text-gray-300 transition-all group-hover:translate-x-1 group-hover:text-charcoal" />
+            </Link>
           ))}
+
+          {/* Fill the trailing cell with a call-to-action instead of empty space. */}
+          <Link
+            href="/services"
+            className="group flex items-center justify-between gap-4 border-t border-charcoal bg-charcoal px-6 py-7 text-white transition-colors hover:bg-charcoal-soft"
+          >
+            <span className="font-display text-lg font-bold">Xem tất cả dịch vụ</span>
+            <span className="flex h-10 w-10 items-center justify-center rounded-full bg-white/10 transition-transform group-hover:translate-x-1">
+              <ArrowRightOutlined />
+            </span>
+          </Link>
         </div>
       </div>
     </section>
