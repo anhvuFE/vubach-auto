@@ -17,7 +17,7 @@ const CONTACT = { contactPhone: '0975224557', contactName: 'Mr. Vũ Bách' };
 const IMG = {
   mazda3: [
     'https://autophongbon.com/wp-content/uploads/2024/12/xe-mazda-3-2.jpg',
-    'https://cdn.oto.com.vn/cache/1200x0/2022/06/06/mazda3-2022-1.jpg',
+    'https://images.unsplash.com/photo-1619767886558-efdc259cde1a?auto=format&fit=crop&w=900&q=70',
   ],
   vf3: [
     'https://greenfuture.tech/_next/image?url=https%3A%2F%2Fupload-static.fgf.vn%2Fcms%2Fvinfast-vf-3-cu-2.jpg&w=3840&q=100',

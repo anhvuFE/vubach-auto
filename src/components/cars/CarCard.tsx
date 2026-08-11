@@ -34,6 +34,9 @@ export default function CarCard({ car, layout = 'grid', priority = false }: CarC
   return (
     <Link
       href={`/cars/${car.slug}`}
+      data-testid="car-card"
+      data-price={car.price}
+      data-status={car.status}
       className={`group flex overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-card transition-all duration-300 hover:-translate-y-1 hover:border-brand/30 hover:shadow-card-hover ${
         isList ? 'flex-col sm:flex-row' : 'flex-col'
       }`}
@@ -54,17 +57,17 @@ export default function CarCard({ car, layout = 'grid', priority = false }: CarC
             car.status === 'sold' ? 'grayscale-[35%]' : ''
           }`}
         />
-        <div className="absolute left-3 top-3 flex gap-2">
+        <div className="absolute left-3 top-3 z-10 flex gap-2">
           <StatusBadge status={car.status} />
           <span className="inline-flex items-center rounded-full bg-charcoal/80 px-2.5 py-1 text-xs font-semibold text-white backdrop-blur">
             {car.condition}
           </span>
         </div>
-        <FavoriteButton carId={car.id} className="absolute right-3 top-3" />
-        <div className="pointer-events-none absolute inset-0 flex items-center justify-center opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+        <FavoriteButton carId={car.id} className="absolute right-3 top-3 z-10" />
+        <div className="pointer-events-none absolute inset-0 z-10 flex items-center justify-center opacity-0 transition-opacity duration-300 group-hover:opacity-100">
           <QuickView car={car} />
         </div>
-        <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-charcoal/80 to-transparent p-3">
+        <div className="absolute inset-x-0 bottom-0 z-10 bg-gradient-to-t from-charcoal/80 to-transparent p-3">
           <span className="font-display text-lg font-extrabold text-white drop-shadow">
             {formatPrice(car.price)}
           </span>

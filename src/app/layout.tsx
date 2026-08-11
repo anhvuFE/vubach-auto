@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from 'next';
+import { Suspense } from 'react';
 import { Be_Vietnam_Pro, Montserrat } from 'next/font/google';
 import { SITE } from '@/constants/site';
 import Providers from '@/providers/Providers';
@@ -67,7 +68,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body>
         <Providers>
           <div className="flex min-h-screen flex-col">
-            <Header />
+            <Suspense fallback={null}>
+              <Header />
+            </Suspense>
             <main className="flex-1">{children}</main>
             <Footer />
           </div>

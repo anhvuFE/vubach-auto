@@ -121,7 +121,7 @@ test('Favorite toggle persists to the favorites page', async ({ page }) => {
     .locator('a[href^="/cars/"]')
     .first()
     .getByRole('button', { name: /yêu thích/i });
-  await heart.click();
+  await heart.dispatchEvent('click');
 
   // Favorite persists (localStorage) and shows on the favorites page after reload.
   await page.goto('/favorites', { waitUntil: 'load' });

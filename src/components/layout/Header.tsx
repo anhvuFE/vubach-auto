@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useSearchParams } from 'next/navigation';
 import { Drawer } from 'antd';
 import { MenuOutlined, CloseOutlined, PhoneOutlined, HeartOutlined } from '@ant-design/icons';
 import Logo from '@/components/common/Logo';
@@ -12,6 +12,7 @@ import { useScrollThreshold } from '@/hooks/useScrollThreshold';
 
 export default function Header() {
   const pathname = usePathname();
+  const searchParams = useSearchParams();
   const dispatch = useAppDispatch();
   const mobileMenuOpen = useAppSelector((s) => s.ui.mobileMenuOpen);
   const favoriteCount = useAppSelector((s) => s.favorite.ids.length);
@@ -24,8 +25,21 @@ export default function Header() {
   const closeMenu = () => dispatch(setMobileMenu(false));
 
   const isActive = (href: string) => {
-    const base = href.split('?')[0];
+    const [base, query] = href.split('?');
     if (base === '/') return pathname === '/';
+
+    // The two "/cars" links differ only by ?status=sold — disambiguate them so
+    // "Xe đang bán" and "Xe đã bán" are never highlighted at the same time.
+    if (base === '/cars') {
+      const linkIsSold = query?.includes('status=sold') ?? false;
+      if (pathname.startsWith('/cars/')) return !linkIsSold; // detail page → "Xe đang bán"
+      if (pathname === '/cars') {
+        const onSold = searchParams.get('status') === 'sold';
+        return linkIsSold ? onSold : !onSold;
+      }
+      return false;
+    }
+
     return pathname === base || pathname.startsWith(`${base}/`);
   };
 
