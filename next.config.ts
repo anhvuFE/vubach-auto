@@ -8,6 +8,10 @@ const nextConfig: NextConfig = {
     // Allow remote car images from mock data sources. Adjust as needed.
     remotePatterns: [{ protocol: 'https', hostname: '**' }],
     formats: ['image/avif', 'image/webp'],
+    qualities: [70, 75],
+    // Skip on-the-fly image optimization in dev: it runs sharp per image on the
+    // dev server and is a major cause of scroll jank locally. Prod still optimizes.
+    unoptimized: process.env.NODE_ENV === 'development',
   },
 };
 
