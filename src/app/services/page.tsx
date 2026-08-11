@@ -38,21 +38,27 @@ export default function ServicesPage() {
             title="Chúng tôi cung cấp"
             description="Đầy đủ dịch vụ giúp bạn mua, bán và sở hữu xe một cách dễ dàng nhất."
           />
-          <div className="mt-12 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="mt-10 grid md:grid-cols-2 md:gap-x-16">
             {SERVICES.map((service, i) => (
-              <Reveal key={service.title} delay={(i % 3) * 0.08}>
-                <div className="flex h-full gap-4 rounded-2xl border border-gray-100 bg-white p-6 shadow-card transition-all duration-300 hover:-translate-y-1 hover:border-brand/30 hover:shadow-card-hover">
-                  <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl bg-brand/10 text-2xl text-brand">
-                    <DynamicIcon name={service.icon} />
-                  </span>
-                  <div>
-                    <h3 className="font-display text-lg font-bold text-charcoal">{service.title}</h3>
-                    <p className="mt-1.5 text-sm leading-relaxed text-gray-500">
-                      {service.description}
-                    </p>
+              <div
+                key={service.title}
+                className="flex items-start gap-5 border-t border-gray-200 py-7 sm:gap-6"
+              >
+                <span className="pt-1 font-display text-xl font-bold tabular-nums text-gray-300">
+                  {String(i + 1).padStart(2, '0')}
+                </span>
+                <div className="flex-1">
+                  <div className="flex items-center gap-2.5">
+                    <DynamicIcon name={service.icon} className="text-lg text-brand" />
+                    <h3 className="font-display text-lg font-bold text-charcoal sm:text-xl">
+                      {service.title}
+                    </h3>
                   </div>
+                  <p className="mt-2 text-sm leading-relaxed text-gray-500">
+                    {service.description}
+                  </p>
                 </div>
-              </Reveal>
+              </div>
             ))}
           </div>
         </div>
