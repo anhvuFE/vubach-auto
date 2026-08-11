@@ -1,134 +1,78 @@
-# Vũ Bách Auto - Landing Page Bán Ô Tô Cũ
+# Vũ Bách Auto – Showroom ô tô đã qua sử dụng
 
-## 🚗 Giới thiệu
-Landing page quản lý và hiển thị thông tin xe ô tô cũ, được xây dựng với React + TypeScript + Vite. Dữ liệu được lưu trữ local không cần database.
+Website showroom ô tô cũ cao cấp: hiện đại, chuyên nghiệp, responsive. Xây dựng bằng **Next.js App Router** với dữ liệu mock, kiến trúc sẵn sàng để thay bằng API thật mà không phải viết lại UI.
+
+> **Uy tín tạo niềm tin – Chất lượng tạo giá trị**
+
+## 🛠 Công nghệ
+
+- **Next.js 15** (App Router) + **React 19**
+- **TypeScript** (strict)
+- **Tailwind CSS 3** (layout, spacing, responsive)
+- **Ant Design 5** (Form, Select, Drawer, Modal, Table, Pagination...)
+- **Redux Toolkit** + React Redux (global state)
+- **Framer Motion** (animation)
+- ESLint + Prettier
 
 ## ✨ Tính năng
-- **Landing Page**: Hiển thị danh sách xe với giao diện đẹp mắt
-- **Admin Panel**: Quản lý thông tin xe (thêm/sửa/xóa)
-- **Local Storage**: Lưu dữ liệu trực tiếp trên trình duyệt
-- **Export/Import**: Sao lưu và khôi phục dữ liệu dạng JSON
-- **Upload ảnh**: Hỗ trợ upload ảnh base64 hoặc qua ImgBB/Cloudinary
-- **Responsive**: Tương thích mọi thiết bị
 
-## 🛠 Công nghệ sử dụng
-- React 19 + TypeScript
-- Vite
-- Material-UI (MUI) + Ant Design
-- Zustand (State Management)
-- React Router DOM
-- Local Storage API
+- **Trang chủ**: Hero + tìm kiếm nhanh, xe nổi bật, thống kê, dịch vụ, giới thiệu, CTA
+- **Danh sách xe** `/cars`: bộ lọc (hãng, giá, năm, km, nhiên liệu, hộp số, kiểu dáng, tình trạng), tìm kiếm, sắp xếp, phân trang, grid/list, filter drawer trên mobile
+- **Chi tiết xe** `/cars/[slug]`: gallery + xem toàn màn hình, thông số kỹ thuật, CTA (gọi/Zalo/lái thử/đặt lịch), xe tương tự, SEO động
+- **Giới thiệu / Dịch vụ / Liên hệ**: nội dung showroom + form liên hệ (validate)
+- **Admin** `/admin`: quản lý xe (thêm/sửa/xoá), export/import JSON, lưu localStorage
+- **Yêu thích xe**, floating buttons (phone/Zalo/Messenger)
+- **SEO**: metadata theo trang, sitemap, robots, Open Graph
 
-## 🚀 Cài đặt và chạy
+## 📁 Cấu trúc
 
-### 1. Clone project
-```bash
-git clone https://github.com/your-username/vubach-auto.git
-cd vubach-auto
+```
+src/
+├── app/                # Routes (App Router) + sitemap/robots
+│   ├── cars/[slug]/    # Trang chi tiết xe (SSG)
+│   ├── about, services, contact, admin/
+│   └── layout.tsx, page.tsx, globals.css
+├── components/         # common, layout, home, cars, contact, admin
+├── constants/          # site, filters, content
+├── data/               # cars.ts (mock inventory)
+├── store/              # Redux: slices (car, filter, favorite, ui), selectors, persist
+├── providers/          # Redux + Ant Design (SSR registry, theme, vi_VN)
+├── services/           # imageUpload (ImgBB/Cloudinary/base64)
+├── types/ • utils/ • lib/
 ```
 
-### 2. Cài đặt dependencies
+## 🚀 Cài đặt & chạy
+
 ```bash
 npm install
+cp .env.example .env.local   # điều chỉnh biến môi trường nếu cần
+npm run dev                  # http://localhost:3000
 ```
 
-### 3. Chạy development server
+Scripts:
+
 ```bash
-npm run dev
+npm run dev        # Dev server
+npm run build      # Production build
+npm run start      # Chạy bản production
+npm run lint       # ESLint
+npm run typecheck  # Kiểm tra kiểu TypeScript
+npm run format     # Prettier
 ```
 
-### 4. Build production
-```bash
-npm run build
-```
+## 🔧 Biến môi trường
 
-## 📝 Hướng dẫn sử dụng
+Xem `.env.example`. Tất cả đều tuỳ chọn cho bản mock; quan trọng nhất:
 
-### Truy cập Admin Panel
-1. Vào trang chủ, click icon Admin ở góc phải header
-2. Đăng nhập với mật khẩu: `admin123`
-3. Quản lý xe trong Admin Panel
+- `NEXT_PUBLIC_SITE_URL` – dùng cho SEO/sitemap/Open Graph
+- `NEXT_PUBLIC_HOTLINE`, `NEXT_PUBLIC_ZALO`, `NEXT_PUBLIC_EMAIL`
+- `NEXT_PUBLIC_ADMIN_PASSWORD` – mật khẩu vào `/admin` (mặc định `admin123`)
+- `NEXT_PUBLIC_IMGBB_API_KEY` / Cloudinary – upload ảnh trong admin (fallback base64)
 
-### Thêm xe mới
-1. Trong Admin Panel, click "Thêm xe mới"
-2. Điền đầy đủ thông tin xe
-3. Upload ảnh (sẽ được chuyển thành base64)
-4. Click "Thêm xe"
+## 🔌 Thay mock data bằng API thật
 
-### Export/Import dữ liệu
-- **Export**: Click "Xuất dữ liệu" để tải file JSON
-- **Import**: Click "Import dữ liệu" và chọn file JSON đã export
+Dữ liệu tập trung ở `src/data/cars.ts` với các selector thuần (`getFeaturedCars`, `getCarBySlug`...). Chỉ cần thay phần này bằng lệnh gọi API trả về đúng kiểu `Car` — toàn bộ UI và store giữ nguyên.
 
-### Upload ảnh lên cloud (Tùy chọn)
-Nếu muốn upload ảnh lên cloud thay vì base64:
+## ☁️ Deploy
 
-1. **ImgBB** (Miễn phí):
-   - Đăng ký tại https://imgbb.com/
-   - Lấy API key
-   - Thêm vào file `.env`: `VITE_IMGBB_API_KEY=your_key`
-
-2. **Cloudinary** (Miễn phí):
-   - Đăng ký tại https://cloudinary.com/
-   - Tạo upload preset (unsigned)
-   - Thêm vào file `.env`:
-     ```
-     VITE_CLOUDINARY_CLOUD_NAME=your_cloud_name
-     VITE_CLOUDINARY_UPLOAD_PRESET=your_preset
-     ```
-
-## 🌐 Deploy lên Vercel
-
-### Cách 1: Deploy qua Vercel CLI
-```bash
-# Cài đặt Vercel CLI
-npm i -g vercel
-
-# Deploy
-vercel
-
-# Follow prompts...
-```
-
-### Cách 2: Deploy qua GitHub
-1. Push code lên GitHub
-2. Vào https://vercel.com/
-3. Import project từ GitHub
-4. Deploy tự động
-
-## 📁 Cấu trúc project
-```
-vubach-auto/
-├── src/
-│   ├── components/     # React components
-│   ├── pages/          # Các trang (Home, Admin, Detail)
-│   ├── store/          # Zustand store
-│   ├── services/       # Services (image upload)
-│   ├── types/          # TypeScript types
-│   ├── utils/          # Utilities
-│   └── styles/         # CSS files
-├── public/
-├── index.html
-├── package.json
-├── tsconfig.json
-├── vite.config.ts
-└── vercel.json
-```
-
-## ⚠️ Lưu ý quan trọng
-- Dữ liệu lưu trong Local Storage (giới hạn ~5-10MB)
-- Nên export backup thường xuyên
-- Ảnh base64 chiếm nhiều dung lượng, nên dùng ImgBB/Cloudinary cho ảnh lớn
-- Mật khẩu admin lưu trong Local Storage (không bảo mật cao)
-
-## 🔒 Bảo mật
-- Đổi mật khẩu admin sau khi deploy
-- Không lưu thông tin nhạy cảm
-- Backup dữ liệu thường xuyên
-
-## 📞 Liên hệ
-- Website: vubach-auto.vercel.app
-- Phone: 0901 234 567
-- Email: contact@vubach-auto.com
-
-## 📄 License
-MIT License - Feel free to use for your project!
+Tối ưu cho **Vercel** (tự nhận diện Next.js, không cần cấu hình thêm). Đảm bảo `npm run build` không có lỗi TypeScript/ESLint trước khi deploy.
