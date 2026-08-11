@@ -29,7 +29,7 @@ export default function HeroSearch() {
   };
 
   return (
-    <div className="w-full rounded-2xl border border-white/10 bg-white/95 p-3 shadow-2xl backdrop-blur-md sm:p-4">
+    <div className="w-full rounded-2xl border border-white/10 bg-white p-3 shadow-2xl sm:p-4">
       <div className="grid gap-3 md:grid-cols-[1fr_1fr_1fr_auto]">
         <Select
           {...selectProps}

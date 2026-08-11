@@ -6,7 +6,7 @@ import DynamicIcon from '@/components/common/DynamicIcon';
 import { CORE_VALUES, COMMITMENTS } from '@/constants/content';
 
 const SHOWROOM_IMAGE =
-  'https://images.unsplash.com/photo-1552519507-da3b142c6e3d?auto=format&fit=crop&w=1400&q=80';
+  'https://images.unsplash.com/photo-1552519507-da3b142c6e3d?auto=format&fit=crop&w=1000&q=70';
 
 export default function WhyChooseUs() {
   return (
