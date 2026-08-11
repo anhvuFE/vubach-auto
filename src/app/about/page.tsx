@@ -47,7 +47,7 @@ export default function AboutPage() {
             <span className="inline-flex items-center gap-2 text-sm font-semibold uppercase tracking-[0.2em] text-brand">
               <span className="h-px w-6 bg-brand" /> Câu chuyện thương hiệu
             </span>
-            <h2 className="mt-3 font-display text-3xl font-extrabold text-charcoal sm:text-4xl">
+            <h2 className="mt-3 font-serif text-4xl font-bold tracking-tight text-charcoal sm:text-5xl">
               Hơn một thập kỷ đồng hành cùng khách hàng
             </h2>
             <div className="mt-4 space-y-4 leading-relaxed text-gray-600">
@@ -148,7 +148,7 @@ export default function AboutPage() {
       <section className="section bg-gray-50">
         <div className="container-page text-center">
           <Reveal>
-            <h2 className="font-display text-3xl font-extrabold text-charcoal">
+            <h2 className="font-serif text-4xl font-bold tracking-tight text-charcoal">
               Sẵn sàng tìm chiếc xe của bạn?
             </h2>
             <p className="mx-auto mt-3 max-w-xl text-gray-500">

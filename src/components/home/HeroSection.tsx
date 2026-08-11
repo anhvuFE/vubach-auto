@@ -28,15 +28,15 @@ export default function HeroSection() {
       {/* Content */}
       <div className="container-page relative z-10 pt-28 pb-16">
         <div className="max-w-3xl">
-          <span className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-1.5 text-sm font-semibold text-white backdrop-blur">
-            <SafetyCertificateOutlined className="text-brand" />
+          <span className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.2em] text-white/80">
+            <SafetyCertificateOutlined className="text-brand-light" />
             Showroom ô tô đã qua sử dụng uy tín
           </span>
 
-          <h1 className="mt-6 font-display text-5xl font-extrabold leading-tight text-white sm:text-6xl lg:text-7xl">
-            VŨ BÁCH <span className="text-brand">AUTO</span>
+          <h1 className="mt-6 font-serif text-6xl font-bold leading-[1.02] tracking-tight text-white sm:text-7xl lg:text-8xl">
+            VŨ BÁCH <span className="text-brand-light">AUTO</span>
           </h1>
-          <p className="mt-4 max-w-xl text-lg font-medium text-white/85 sm:text-xl">
+          <p className="mt-5 max-w-xl font-serif text-xl italic text-white/80 sm:text-2xl">
             {SITE.tagline}
           </p>
 

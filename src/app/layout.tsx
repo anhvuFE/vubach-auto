@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from 'next';
 import { Suspense } from 'react';
-import { Be_Vietnam_Pro, Montserrat } from 'next/font/google';
+import { Be_Vietnam_Pro, Montserrat, Playfair_Display } from 'next/font/google';
 import { SITE } from '@/constants/site';
 import Providers from '@/providers/Providers';
 import Header from '@/components/layout/Header';
@@ -19,6 +19,13 @@ const montserrat = Montserrat({
   subsets: ['latin', 'vietnamese'],
   weight: ['600', '700', '800'],
   variable: '--font-display',
+  display: 'swap',
+});
+
+const playfair = Playfair_Display({
+  subsets: ['latin', 'vietnamese'],
+  weight: ['500', '600', '700', '800'],
+  variable: '--font-serif',
   display: 'swap',
 });
 
@@ -64,7 +71,10 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="vi" className={`${beVietnam.variable} ${montserrat.variable}`}>
+    <html
+      lang="vi"
+      className={`${beVietnam.variable} ${montserrat.variable} ${playfair.variable}`}
+    >
       <body>
         <Providers>
           <div className="flex min-h-screen flex-col">

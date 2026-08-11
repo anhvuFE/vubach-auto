@@ -87,7 +87,7 @@ export default function CarContactCard({ car }: { car: Car }) {
         onOk={handleSubmit}
         okText="Gửi yêu cầu"
         cancelText="Huỷ"
-        okButtonProps={{ style: { background: '#e11d2a' } }}
+        okButtonProps={{ style: { background: '#2563eb' } }}
       >
         <p className="mb-4 text-sm text-gray-500">
           Xe quan tâm: <span className="font-semibold text-charcoal">{carDisplayName(car)}</span>

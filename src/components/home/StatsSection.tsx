@@ -9,7 +9,7 @@ export default function StatsSection() {
         className="absolute inset-0 opacity-[0.06]"
         style={{
           backgroundImage:
-            'radial-gradient(circle at 20% 20%, #e11d2a 0, transparent 40%), radial-gradient(circle at 80% 80%, #e11d2a 0, transparent 40%)',
+            'radial-gradient(circle at 20% 20%, #2563eb 0, transparent 40%), radial-gradient(circle at 80% 80%, #2563eb 0, transparent 40%)',
         }}
       />
       <div className="container-page relative">

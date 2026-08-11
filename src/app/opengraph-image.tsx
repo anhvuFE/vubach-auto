@@ -31,7 +31,7 @@ export default function OpengraphImage() {
               width: 64,
               height: 64,
               borderRadius: 16,
-              background: '#e11d2a',
+              background: '#2563eb',
               alignItems: 'center',
               justifyContent: 'center',
               fontSize: 34,
@@ -47,7 +47,7 @@ export default function OpengraphImage() {
 
         <div style={{ display: 'flex', marginTop: 40, fontSize: 84, fontWeight: 800 }}>
           <span>VŨ BÁCH&nbsp;</span>
-          <span style={{ color: '#e11d2a' }}>AUTO</span>
+          <span style={{ color: '#2563eb' }}>AUTO</span>
         </div>
         <div style={{ display: 'flex', marginTop: 24, fontSize: 36, color: 'rgba(255,255,255,0.8)' }}>
           {SITE.tagline}
@@ -56,7 +56,7 @@ export default function OpengraphImage() {
         <div style={{ display: 'flex', marginTop: 48, gap: 32, fontSize: 26 }}>
           {highlights.map((item) => (
             <div key={item} style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-              <div style={{ display: 'flex', width: 14, height: 14, borderRadius: 999, background: '#e11d2a' }} />
+              <div style={{ display: 'flex', width: 14, height: 14, borderRadius: 999, background: '#2563eb' }} />
               <span>{item}</span>
             </div>
           ))}

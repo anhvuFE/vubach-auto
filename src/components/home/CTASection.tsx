@@ -13,11 +13,11 @@ export default function CTASection() {
               className="absolute inset-0 opacity-10"
               style={{
                 backgroundImage:
-                  'radial-gradient(circle at 15% 50%, #e11d2a 0, transparent 35%), radial-gradient(circle at 85% 50%, #e11d2a 0, transparent 35%)',
+                  'radial-gradient(circle at 15% 50%, #2563eb 0, transparent 35%), radial-gradient(circle at 85% 50%, #2563eb 0, transparent 35%)',
               }}
             />
             <div className="relative mx-auto max-w-2xl">
-              <h2 className="font-display text-3xl font-extrabold text-white sm:text-4xl">
+              <h2 className="font-serif text-4xl font-bold tracking-tight text-white sm:text-5xl">
                 Cần tư vấn chọn xe phù hợp?
               </h2>
               <p className="mt-4 text-base text-white/70 sm:text-lg">
