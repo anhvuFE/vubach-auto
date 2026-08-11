@@ -89,31 +89,27 @@ export default function AboutPage() {
       </section>
 
       {/* Vision & Mission */}
-      <section className="section bg-gray-50">
-        <div className="container-page grid gap-6 lg:grid-cols-2">
-          <Reveal>
-            <div className="h-full rounded-2xl bg-white p-8 shadow-card">
-              <span className="flex h-14 w-14 items-center justify-center rounded-xl bg-brand/10 text-2xl text-brand">
-                <AimOutlined />
-              </span>
-              <h3 className="mt-5 font-display text-2xl font-bold text-charcoal">Tầm nhìn</h3>
-              <p className="mt-3 leading-relaxed text-gray-600">
-                Trở thành hệ thống showroom ô tô đã qua sử dụng uy tín hàng đầu, nơi khách hàng luôn
-                an tâm về chất lượng và dịch vụ.
-              </p>
+      <section className="section bg-white">
+        <div className="container-page grid gap-10 md:grid-cols-2 md:gap-16">
+          <Reveal className="border-t-2 border-charcoal pt-8">
+            <div className="flex items-center gap-3">
+              <AimOutlined className="text-xl text-brand" />
+              <h3 className="font-display text-2xl font-bold text-charcoal">Tầm nhìn</h3>
             </div>
+            <p className="mt-4 leading-relaxed text-gray-500">
+              Trở thành hệ thống showroom ô tô đã qua sử dụng uy tín hàng đầu, nơi khách hàng luôn an
+              tâm về chất lượng và dịch vụ.
+            </p>
           </Reveal>
-          <Reveal delay={0.1}>
-            <div className="h-full rounded-2xl bg-white p-8 shadow-card">
-              <span className="flex h-14 w-14 items-center justify-center rounded-xl bg-brand/10 text-2xl text-brand">
-                <RocketOutlined />
-              </span>
-              <h3 className="mt-5 font-display text-2xl font-bold text-charcoal">Sứ mệnh</h3>
-              <p className="mt-3 leading-relaxed text-gray-600">
-                Mang đến cho mỗi khách hàng trải nghiệm mua bán xe minh bạch, tiện lợi và xứng đáng
-                với giá trị đồng tiền bỏ ra.
-              </p>
+          <Reveal delay={0.1} className="border-t-2 border-charcoal pt-8">
+            <div className="flex items-center gap-3">
+              <RocketOutlined className="text-xl text-brand" />
+              <h3 className="font-display text-2xl font-bold text-charcoal">Sứ mệnh</h3>
             </div>
+            <p className="mt-4 leading-relaxed text-gray-500">
+              Mang đến cho mỗi khách hàng trải nghiệm mua bán xe minh bạch, tiện lợi và xứng đáng với
+              giá trị đồng tiền bỏ ra.
+            </p>
           </Reveal>
         </div>
       </section>
@@ -126,18 +122,12 @@ export default function AboutPage() {
             title="Điều làm nên Vũ Bách Auto"
             description="Những giá trị chúng tôi kiên định theo đuổi trong suốt hành trình phát triển."
           />
-          <div className="mt-12 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="mt-12 grid grid-cols-1 gap-x-10 gap-y-8 sm:grid-cols-2 lg:grid-cols-4">
             {CORE_VALUES.map((value, i) => (
-              <Reveal key={value.title} delay={(i % 4) * 0.08}>
-                <div className="h-full rounded-2xl border border-gray-100 bg-white p-6 text-center shadow-card">
-                  <span className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-brand/10 text-2xl text-brand">
-                    <DynamicIcon name={value.icon} />
-                  </span>
-                  <h3 className="mt-4 font-display text-lg font-bold text-charcoal">
-                    {value.title}
-                  </h3>
-                  <p className="mt-2 text-sm text-gray-500">{value.description}</p>
-                </div>
+              <Reveal key={value.title} delay={(i % 4) * 0.08} className="border-t-2 border-charcoal pt-6">
+                <DynamicIcon name={value.icon} className="text-2xl text-brand" />
+                <h3 className="mt-4 font-display text-lg font-bold text-charcoal">{value.title}</h3>
+                <p className="mt-2 text-sm leading-relaxed text-gray-500">{value.description}</p>
               </Reveal>
             ))}
           </div>

@@ -44,16 +44,12 @@ export default function WhyChooseUs() {
             bạch, an tâm và chuyên nghiệp.
           </p>
 
-          <div className="mt-6 grid grid-cols-2 gap-4">
+          <div className="mt-8 grid grid-cols-2 gap-x-8 gap-y-6">
             {CORE_VALUES.map((value) => (
-              <div key={value.title} className="flex gap-3">
-                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-brand/10 text-lg text-brand">
-                  <DynamicIcon name={value.icon} />
-                </span>
-                <div>
-                  <p className="font-bold text-charcoal">{value.title}</p>
-                  <p className="text-sm text-gray-500">{value.description}</p>
-                </div>
+              <div key={value.title} className="border-t-2 border-charcoal pt-4">
+                <DynamicIcon name={value.icon} className="text-xl text-brand" />
+                <p className="mt-3 font-bold text-charcoal">{value.title}</p>
+                <p className="mt-1 text-sm text-gray-500">{value.description}</p>
               </div>
             ))}
           </div>

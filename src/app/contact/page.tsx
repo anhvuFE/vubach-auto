@@ -32,26 +32,25 @@ export default function ContactPage() {
 
       <section className="section bg-white">
         <div className="container-page">
-          {/* Info cards */}
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {/* Info row */}
+          <div className="grid grid-cols-1 border-t border-gray-200 sm:grid-cols-2 lg:grid-cols-4 lg:divide-x lg:divide-gray-200">
             {infoCards.map((card) => (
-              <div
-                key={card.title}
-                className="rounded-2xl border border-gray-100 bg-white p-6 shadow-card"
-              >
-                <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-brand/10 text-xl text-brand">
-                  {card.icon}
-                </span>
-                <h3 className="mt-4 font-display font-bold text-charcoal">{card.title}</h3>
+              <div key={card.title} className="border-b border-gray-200 py-6 lg:border-b-0 lg:px-8 lg:first:pl-0">
+                <div className="flex items-center gap-2 text-brand">
+                  <span className="text-base">{card.icon}</span>
+                  <span className="text-xs font-semibold uppercase tracking-[0.16em] text-gray-400">
+                    {card.title}
+                  </span>
+                </div>
                 {card.href ? (
                   <a
                     href={card.href}
-                    className="mt-1 block text-sm text-gray-500 transition-colors hover:text-brand"
+                    className="mt-2 block font-display text-lg font-bold text-charcoal transition-colors hover:text-brand"
                   >
                     {card.value}
                   </a>
                 ) : (
-                  <p className="mt-1 text-sm text-gray-500">{card.value}</p>
+                  <p className="mt-2 font-display text-lg font-bold text-charcoal">{card.value}</p>
                 )}
               </div>
             ))}
