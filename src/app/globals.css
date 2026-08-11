@@ -1,0 +1,114 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+ * Preflight is disabled (see tailwind.config.ts) to avoid clobbering Ant Design.
+ * These minimal base resets give us a clean canvas without touching antd.
+ */
+@layer base {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    margin: 0;
+    color: #111418;
+    background-color: #ffffff;
+    font-family: var(--font-sans), system-ui, -apple-system, sans-serif;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    overflow-x: hidden;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    margin: 0;
+    font-family: var(--font-display), var(--font-sans), sans-serif;
+    line-height: 1.15;
+    font-weight: 700;
+  }
+
+  p {
+    margin: 0;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  img,
+  picture,
+  video,
+  svg {
+    max-width: 100%;
+  }
+}
+
+@layer components {
+  /* Page container with responsive gutters. */
+  .container-page {
+    @apply mx-auto w-full max-w-container px-4 sm:px-6 lg:px-8;
+  }
+
+  /* Section vertical rhythm. */
+  .section {
+    @apply py-14 md:py-20 lg:py-24;
+  }
+
+  /* Gradient text used for accents. */
+  .text-gradient-brand {
+    @apply bg-gradient-to-r from-brand to-brand-light bg-clip-text text-transparent;
+  }
+
+  /* Thin scrollbar for filter/gallery rails. */
+  .scrollbar-thin::-webkit-scrollbar {
+    height: 6px;
+    width: 6px;
+  }
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    background: rgba(17, 20, 24, 0.2);
+    border-radius: 9999px;
+  }
+}
+
+/* Line clamp helpers (used on card titles/descriptions). */
+.line-clamp-1,
+.line-clamp-2,
+.line-clamp-3 {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.line-clamp-1 {
+  -webkit-line-clamp: 1;
+}
+.line-clamp-2 {
+  -webkit-line-clamp: 2;
+}
+.line-clamp-3 {
+  -webkit-line-clamp: 3;
+}
+
+/* Keep Ant Design overlays above the sticky header. */
+.ant-drawer,
+.ant-modal-root,
+.ant-message,
+.ant-notification,
+.ant-select-dropdown,
+.ant-picker-dropdown {
+  z-index: 2000;
+}
