@@ -1,6 +1,6 @@
 'use client';
 
-import { Select } from 'antd';
+import { Badge, Button, Input, Segmented, Select } from 'antd';
 import {
   AppstoreOutlined,
   BarsOutlined,
@@ -22,16 +22,14 @@ export default function CarsToolbar({ total }: { total: number }) {
   return (
     <div className="flex flex-col gap-3">
       {/* Search */}
-      <div className="relative">
-        <SearchOutlined className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
-        <input
-          type="search"
-          value={search}
-          onChange={(e) => dispatch(setSearch(e.target.value))}
-          placeholder="Tìm theo hãng, mẫu xe hoặc năm..."
-          className="w-full rounded-xl border border-gray-200 bg-white py-3 pl-11 pr-4 text-sm outline-none transition-colors focus:border-brand"
-        />
-      </div>
+      <Input
+        size="large"
+        allowClear
+        prefix={<SearchOutlined className="text-gray-400" />}
+        placeholder="Tìm theo hãng, mẫu xe hoặc năm..."
+        value={search}
+        onChange={(e) => dispatch(setSearch(e.target.value))}
+      />
 
       {/* Controls */}
       <div className="flex flex-wrap items-center justify-between gap-3">
@@ -41,18 +39,15 @@ export default function CarsToolbar({ total }: { total: number }) {
 
         <div className="flex items-center gap-2">
           {/* Mobile filter trigger */}
-          <button
-            type="button"
-            onClick={() => dispatch(setFilterDrawer(true))}
-            className="flex items-center gap-2 rounded-lg border border-gray-200 px-3 py-2 text-sm font-semibold text-charcoal lg:hidden"
-          >
-            <FilterOutlined /> Bộ lọc
-            {activeCount > 0 && (
-              <span className="flex h-5 w-5 items-center justify-center rounded-full bg-brand text-xs text-white">
-                {activeCount}
-              </span>
-            )}
-          </button>
+          <Badge count={activeCount} size="small" className="lg:hidden">
+            <Button
+              size="large"
+              icon={<FilterOutlined />}
+              onClick={() => dispatch(setFilterDrawer(true))}
+            >
+              Bộ lọc
+            </Button>
+          </Badge>
 
           <Select
             size="large"
@@ -63,21 +58,16 @@ export default function CarsToolbar({ total }: { total: number }) {
           />
 
           {/* View toggle */}
-          <div className="hidden overflow-hidden rounded-lg border border-gray-200 sm:flex">
-            {(['grid', 'list'] as ViewMode[]).map((mode) => (
-              <button
-                key={mode}
-                type="button"
-                aria-label={mode === 'grid' ? 'Dạng lưới' : 'Dạng danh sách'}
-                onClick={() => dispatch(setView(mode))}
-                className={`flex h-11 w-11 items-center justify-center text-lg transition-colors ${
-                  view === mode ? 'bg-brand text-white' : 'bg-white text-gray-500 hover:text-brand'
-                }`}
-              >
-                {mode === 'grid' ? <AppstoreOutlined /> : <BarsOutlined />}
-              </button>
-            ))}
-          </div>
+          <Segmented<ViewMode>
+            size="large"
+            className="hidden sm:inline-block"
+            value={view}
+            onChange={(v) => dispatch(setView(v))}
+            options={[
+              { value: 'grid', icon: <AppstoreOutlined />, title: 'Dạng lưới' },
+              { value: 'list', icon: <BarsOutlined />, title: 'Dạng danh sách' },
+            ]}
+          />
         </div>
       </div>
     </div>

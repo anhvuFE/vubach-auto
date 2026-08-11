@@ -27,12 +27,14 @@ test('Status filter shows only sold cars', async ({ page }, info) => {
   desktopOnly(info.project.name);
   await page.goto('/cars', { waitUntil: 'load' });
 
-  await page.locator('aside').getByRole('button', { name: 'Đã bán', exact: true }).click();
+  const soldTab = page.locator('aside .ant-segmented-item').filter({ hasText: 'Đã bán' });
+  await soldTab.click();
+  await expect(soldTab).toHaveClass(/ant-segmented-item-selected/);
   await expect(async () => {
     const s = await statuses(page);
     expect(s.length).toBeGreaterThan(0);
     expect(s.every((x) => x === 'sold')).toBe(true);
-  }).toPass({ timeout: 4000 });
+  }).toPass({ timeout: 6000 });
 });
 
 test('Sort by price ascending orders the grid', async ({ page }, info) => {

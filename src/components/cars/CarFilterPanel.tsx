@@ -1,6 +1,6 @@
 'use client';
 
-import { Select, Slider } from 'antd';
+import { Button, Segmented, Select, Slider } from 'antd';
 import { ReloadOutlined } from '@ant-design/icons';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import {
@@ -36,8 +36,8 @@ function FilterBlock({ title, children }: { title: string; children: React.React
   );
 }
 
-/** Chip toggle used for body type / fuel / transmission single-select filters. */
-function Chips<T extends string>({
+/** Single-select chip group built on Ant Design buttons for a consistent look. */
+function ChipGroup<T extends string>({
   options,
   value,
   onChange,
@@ -51,18 +51,14 @@ function Chips<T extends string>({
       {options.map((opt) => {
         const active = value === opt.value;
         return (
-          <button
+          <Button
             key={opt.value}
-            type="button"
+            shape="round"
+            type={active ? 'primary' : 'default'}
             onClick={() => onChange(active ? null : opt.value)}
-            className={`rounded-lg border px-3 py-1.5 text-sm font-medium transition-colors ${
-              active
-                ? 'border-brand bg-brand text-white'
-                : 'border-gray-200 bg-white text-charcoal hover:border-brand/50'
-            }`}
           >
             {opt.label}
-          </button>
+          </Button>
         );
       })}
     </div>
@@ -75,34 +71,26 @@ export default function CarFilterPanel() {
 
   return (
     <div>
-      <div className="mb-2 flex items-center justify-between">
+      <div className="mb-3 flex items-center justify-between">
         <h3 className="font-display text-lg font-bold text-charcoal">Bộ lọc</h3>
-        <button
-          type="button"
+        <Button
+          type="text"
+          size="small"
+          icon={<ReloadOutlined />}
           onClick={() => dispatch(resetFilters())}
-          className="flex items-center gap-1.5 text-sm font-semibold text-gray-500 transition-colors hover:text-brand"
+          className="font-semibold text-gray-500"
         >
-          <ReloadOutlined /> Đặt lại
-        </button>
+          Đặt lại
+        </Button>
       </div>
 
       <FilterBlock title="Tình trạng">
-        <div className="grid grid-cols-3 gap-2">
-          {STATUS_TABS.map((tab) => (
-            <button
-              key={tab.value}
-              type="button"
-              onClick={() => dispatch(setStatus(tab.value))}
-              className={`rounded-lg border py-2 text-sm font-semibold transition-colors ${
-                filter.status === tab.value
-                  ? 'border-brand bg-brand text-white'
-                  : 'border-gray-200 text-charcoal hover:border-brand/50'
-              }`}
-            >
-              {tab.label}
-            </button>
-          ))}
-        </div>
+        <Segmented<CarStatus | 'all'>
+          size="large"
+          value={filter.status}
+          onChange={(v) => dispatch(setStatus(v))}
+          options={STATUS_TABS}
+        />
       </FilterBlock>
 
       <FilterBlock title="Hãng xe">
@@ -118,7 +106,7 @@ export default function CarFilterPanel() {
       </FilterBlock>
 
       <FilterBlock title="Kiểu dáng">
-        <Chips<BodyType>
+        <ChipGroup<BodyType>
           options={BODY_TYPES}
           value={filter.bodyType}
           onChange={(v) => dispatch(setBodyType(v))}
@@ -170,7 +158,7 @@ export default function CarFilterPanel() {
       </FilterBlock>
 
       <FilterBlock title="Nhiên liệu">
-        <Chips<FuelType>
+        <ChipGroup<FuelType>
           options={FUEL_TYPES}
           value={filter.fuelType}
           onChange={(v) => dispatch(setFuelType(v))}
@@ -178,7 +166,7 @@ export default function CarFilterPanel() {
       </FilterBlock>
 
       <FilterBlock title="Hộp số">
-        <Chips<TransmissionType>
+        <ChipGroup<TransmissionType>
           options={TRANSMISSIONS}
           value={filter.transmission}
           onChange={(v) => dispatch(setTransmission(v))}
