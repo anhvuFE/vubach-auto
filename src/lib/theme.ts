@@ -5,6 +5,10 @@ import type { ThemeConfig } from 'antd';
  * styling systems stay visually consistent (charcoal + red accent).
  */
 export const antdTheme: ThemeConfig = {
+  // CSS-variable mode computes design tokens once and reuses them, cutting the
+  // per-render style serialization cost of antd's CSS-in-JS (faster SSR).
+  cssVar: true,
+  hashed: false,
   token: {
     colorPrimary: '#e11d2a',
     colorInfo: '#e11d2a',
