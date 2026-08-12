@@ -8,7 +8,6 @@ import Logo from '@/components/common/Logo';
 import { NAV_ITEMS, SITE } from '@/constants/site';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { setMobileMenu } from '@/store/slices/uiSlice';
-import { useScrollThreshold } from '@/hooks/useScrollThreshold';
 
 export default function Header() {
   const pathname = usePathname();
@@ -16,11 +15,10 @@ export default function Header() {
   const dispatch = useAppDispatch();
   const mobileMenuOpen = useAppSelector((s) => s.ui.mobileMenuOpen);
   const favoriteCount = useAppSelector((s) => s.favorite.ids.length);
-  const scrolled = useScrollThreshold(24);
 
-  // Transparent overlay only on the homepage hero; solid everywhere else.
-  const isHome = pathname === '/';
-  const transparent = isHome && !scrolled;
+  // Header is always solid — every page (incl. the light homepage hero) uses a
+  // white bar with dark text now.
+  const transparent = false;
 
   const closeMenu = () => dispatch(setMobileMenu(false));
 

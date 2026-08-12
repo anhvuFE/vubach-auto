@@ -10,7 +10,7 @@ const SHOWROOM_IMAGE =
 
 export default function WhyChooseUs() {
   return (
-    <section className="section bg-gray-50">
+    <section className="section bg-gradient-to-b from-[#eef4ff] to-white">
       <div className="container-page grid items-center gap-12 lg:grid-cols-2">
         {/* Image + values */}
         <Reveal direction="right">
@@ -46,7 +46,7 @@ export default function WhyChooseUs() {
 
           <div className="mt-8 grid grid-cols-2 gap-x-8 gap-y-6">
             {CORE_VALUES.map((value) => (
-              <div key={value.title} className="border-t-2 border-charcoal pt-4">
+              <div key={value.title} className="border-t-2 border-brand pt-4">
                 <DynamicIcon name={value.icon} className="text-xl text-brand" />
                 <p className="mt-3 font-bold text-charcoal">{value.title}</p>
                 <p className="mt-1 text-sm text-gray-500">{value.description}</p>
@@ -65,7 +65,7 @@ export default function WhyChooseUs() {
 
           <Link
             href="/about"
-            className="mt-8 inline-flex rounded-lg bg-charcoal px-6 py-3 text-sm font-bold text-white transition-colors hover:bg-charcoal-soft"
+            className="mt-8 inline-flex rounded-lg bg-brand px-6 py-3 text-sm font-bold text-white shadow-md shadow-brand/25 transition-colors hover:bg-brand-dark"
           >
             Tìm hiểu về chúng tôi
           </Link>

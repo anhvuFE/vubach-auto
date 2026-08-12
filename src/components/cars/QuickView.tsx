@@ -65,8 +65,10 @@ export default function QuickView({ car }: { car: Car }) {
       >
         <div className="grid gap-0 md:grid-cols-2">
           {/* Gallery */}
-          <div className="bg-charcoal p-4">
-            <div className="relative aspect-[16/11] overflow-hidden rounded-xl">
+          <div className="flex flex-col bg-charcoal p-4">
+            {/* On desktop the image grows to fill the column height (matching the
+                taller info panel) so there's no large black gap below it. */}
+            <div className="relative aspect-[16/11] overflow-hidden rounded-xl md:aspect-auto md:min-h-0 md:flex-1">
               <CarImage
                 key={active}
                 src={images[active]}
