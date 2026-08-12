@@ -29,7 +29,10 @@ export default function HeroSearch() {
   };
 
   return (
-    <div className="w-full rounded-2xl border border-white/10 bg-white p-3 shadow-2xl sm:p-4">
+    <div className="w-full rounded-2xl border border-gray-100 bg-white p-4 shadow-card-hover sm:p-5">
+      <p className="mb-3 flex items-center gap-2 font-display text-base font-bold text-charcoal">
+        <SearchOutlined className="text-brand" /> Tìm chiếc xe mơ ước của bạn
+      </p>
       <div className="grid gap-3 md:grid-cols-[1fr_1fr_1fr_auto]">
         <Select
           {...selectProps}
