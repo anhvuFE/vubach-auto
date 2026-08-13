@@ -9,30 +9,40 @@ lerna-debug.log*
 
 # Dependencies
 node_modules
-/.pnp
+.pnp
 .pnp.js
 
 # Next.js
-/.next/
-/out/
+.next/
+out/
 next-env.d.ts
 
-# Production
-/build
+# Build output
+build
 dist
 dist-ssr
 
+# Turborepo
+.turbo
+
+# Prisma
+apps/api/prisma/*.db
+apps/api/prisma/migrations/dev.db*
+
+# NestJS
+apps/api/dist
+
 # Playwright
-/playwright-report
-/test-results
-/blob-report
+playwright-report
+test-results
+blob-report
 
 # Misc
 *.local
 .DS_Store
 *.pem
 
-# Debug
+# Vercel
 .vercel
 
 # Env files
