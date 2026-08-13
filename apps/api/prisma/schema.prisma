@@ -1,0 +1,45 @@
+// Prisma schema for the Vũ Bách Auto API.
+// Provider is PostgreSQL; connection string comes from DATABASE_URL.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+/// A car listing. String fields (transmission, fuelType, bodyType, condition,
+/// status) mirror the union types in @vubach/shared rather than DB enums, so the
+/// Vietnamese labels stay the single source of truth on the TypeScript side.
+model Car {
+  id           String   @id @default(cuid())
+  slug         String   @unique
+  brand        String
+  model        String
+  year         Int
+  price        Int
+  mileage      Int
+  transmission String
+  fuelType     String
+  bodyType     String
+  condition    String
+  color        String
+  seats        Int
+  origin       String
+  description  String
+  features     String[]
+  images       String[]
+  mainImage    String
+  status       String   @default("available")
+  isFeatured   Boolean  @default(false)
+  contactPhone String?
+  contactName  String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@index([brand])
+  @@index([status])
+  @@map("cars")
+}

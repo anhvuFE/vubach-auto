@@ -1,4 +1,43 @@
-# Vũ Bách Auto – Showroom ô tô đã qua sử dụng
+# Vũ Bách Auto – Monorepo
+
+Monorepo quản lý bằng **Turborepo** (npm workspaces).
+
+```
+apps/
+  web/       # Next.js 15 frontend (showroom ô tô)
+  api/       # NestJS backend (REST API) + Prisma/PostgreSQL
+packages/
+  shared/    # @vubach/shared – types dùng chung FE ⇄ BE
+```
+
+## Lệnh thường dùng (chạy ở root)
+
+| Lệnh | Mô tả |
+| --- | --- |
+| `npm install` | Cài deps cho toàn bộ workspaces |
+| `npm run dev` | Chạy song song web + api (Turborepo) |
+| `npm run dev:web` | Chỉ chạy frontend (port 3000) |
+| `npm run dev:api` | Chỉ chạy backend (port 4000) |
+| `npm run build` | Build tất cả (tôn trọng thứ tự phụ thuộc) |
+| `npm run typecheck` | Typecheck tất cả workspaces |
+| `npm run lint` | Lint tất cả workspaces |
+
+## Backend (apps/api)
+
+- NestJS 10, prefix toàn cục `/api`, health check tại `GET /api/health`.
+- Prisma + PostgreSQL. Copy `apps/api/.env.example` → `apps/api/.env`, điền `DATABASE_URL`.
+- Khởi tạo DB: `npm run prisma:migrate -w @vubach/api` (cần Postgres đang chạy).
+- Sinh Prisma Client: `npm run prisma:generate -w @vubach/api`.
+
+## Frontend (apps/web)
+
+Chi tiết bên dưới. Cần `apps/web/.env.local` (xem `apps/web/.env.example`).
+
+> **Deploy Vercel**: sau khi lên monorepo, đặt **Root Directory = `apps/web`** trong project settings.
+
+---
+
+## Vũ Bách Auto – Showroom ô tô đã qua sử dụng
 
 Website showroom ô tô cũ cao cấp: hiện đại, chuyên nghiệp, responsive. Xây dựng bằng **Next.js App Router** với dữ liệu mock, kiến trúc sẵn sàng để thay bằng API thật mà không phải viết lại UI.
 
