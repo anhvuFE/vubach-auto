@@ -13,6 +13,9 @@
     "declaration": false,
     "sourceMap": true,
     "incremental": true,
+    // Đặt cache build trong dist để `deleteOutDir` (nest-cli) xóa cùng lúc,
+    // tránh stale cache khiến watch-mode không emit dist/main.js.
+    "tsBuildInfoFile": "./dist/tsconfig.tsbuildinfo",
     "noUnusedLocals": false,
     "noUnusedParameters": false,
     "strictNullChecks": true,
