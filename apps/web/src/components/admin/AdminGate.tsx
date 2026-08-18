@@ -2,14 +2,14 @@
 
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { Spin } from 'antd';
 import { useAppSelector } from '@/store/hooks';
+import Loading from '@/components/common/Loading';
 import AdminDashboard from './AdminDashboard';
 
 /**
  * Guards the CMS: shows the dashboard to an authenticated admin, and redirects
- * everyone else to the dedicated /login page (with a return path). A spinner
- * covers the brief session-bootstrap window and the redirect itself.
+ * everyone else to the dedicated /login page (with a return path). The shared
+ * Loading spinner covers the session-bootstrap window and the redirect itself.
  */
 export default function AdminGate() {
   const initialized = useAppSelector((s) => s.auth.initialized);
@@ -22,11 +22,7 @@ export default function AdminGate() {
   }, [initialized, isAdmin, router]);
 
   if (!initialized || !isAdmin) {
-    return (
-      <div className="flex min-h-[70vh] items-center justify-center pt-24">
-        <Spin size="large" />
-      </div>
-    );
+    return <Loading tip="Đang kiểm tra phiên đăng nhập..." />;
   }
 
   return <AdminDashboard />;

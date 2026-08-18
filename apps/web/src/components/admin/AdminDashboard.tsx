@@ -2,7 +2,7 @@
 
 import { useRef, useState } from 'react';
 import Link from 'next/link';
-import { App, Button, Popconfirm, Table, Tag, type TableColumnsType } from 'antd';
+import { App, Button, Popconfirm, Table, Tooltip, type TableColumnsType } from 'antd';
 import {
   PlusOutlined,
   EditOutlined,
@@ -11,6 +11,11 @@ import {
   ImportOutlined,
   ReloadOutlined,
   LogoutOutlined,
+  CarOutlined,
+  TagOutlined,
+  CheckCircleOutlined,
+  FireOutlined,
+  StarFilled,
 } from '@ant-design/icons';
 import CarFormModal from './CarFormModal';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
@@ -19,10 +24,25 @@ import { logoutThunk } from '@/store/slices/authSlice';
 import { formatPrice } from '@/utils/format';
 import { carDisplayName, type Car, type CarInput, type CarStatus } from '@/types/car';
 
-const STATUS_TAG: Record<CarStatus, { label: string; color: string }> = {
-  available: { label: 'Đang bán', color: 'green' },
-  reserved: { label: 'Đã cọc', color: 'orange' },
-  sold: { label: 'Đã bán', color: 'default' },
+const STATUS_TAG: Record<
+  CarStatus,
+  { label: string; pill: string; dot: string }
+> = {
+  available: {
+    label: 'Đang bán',
+    pill: 'bg-emerald-50 text-emerald-700',
+    dot: 'bg-emerald-500',
+  },
+  reserved: {
+    label: 'Đã cọc',
+    pill: 'bg-amber-50 text-amber-700',
+    dot: 'bg-amber-500',
+  },
+  sold: {
+    label: 'Đã bán',
+    pill: 'bg-slate-100 text-slate-500',
+    dot: 'bg-slate-400',
+  },
 };
 
 export default function AdminDashboard() {
@@ -120,22 +140,46 @@ export default function AdminDashboard() {
       dataIndex: 'status',
       filters: Object.entries(STATUS_TAG).map(([value, { label }]) => ({ text: label, value })),
       onFilter: (value, car) => car.status === value,
-      render: (status: CarStatus) => (
-        <Tag color={STATUS_TAG[status].color}>{STATUS_TAG[status].label}</Tag>
-      ),
+      render: (status: CarStatus) => {
+        const s = STATUS_TAG[status];
+        return (
+          <span
+            className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-medium ${s.pill}`}
+          >
+            <span className={`h-1.5 w-1.5 rounded-full ${s.dot}`} />
+            {s.label}
+          </span>
+        );
+      },
     },
     {
       title: 'Nổi bật',
       dataIndex: 'isFeatured',
       responsive: ['lg'],
-      render: (v: boolean) => (v ? <Tag color="red">Nổi bật</Tag> : '—'),
+      render: (v: boolean) =>
+        v ? (
+          <span className="inline-flex items-center gap-1 rounded-full bg-amber-50 px-2.5 py-1 text-xs font-medium text-amber-700">
+            <StarFilled className="text-[10px]" />
+            Nổi bật
+          </span>
+        ) : (
+          <span className="text-gray-300">—</span>
+        ),
     },
     {
       title: 'Thao tác',
       key: 'actions',
       render: (_, car) => (
-        <div className="flex gap-2">
-          <Button size="small" icon={<EditOutlined />} onClick={() => openEdit(car)} />
+        <div className="flex gap-1">
+          <Tooltip title="Sửa">
+            <Button
+              type="text"
+              size="small"
+              icon={<EditOutlined />}
+              onClick={() => openEdit(car)}
+              className="!text-gray-500 hover:!bg-brand/5 hover:!text-brand"
+            />
+          </Tooltip>
           <Popconfirm
             title="Xoá xe này?"
             okText="Xoá"
@@ -146,7 +190,9 @@ export default function AdminDashboard() {
               message.success('Đã xoá xe');
             }}
           >
-            <Button size="small" danger icon={<DeleteOutlined />} />
+            <Tooltip title="Xoá">
+              <Button type="text" size="small" danger icon={<DeleteOutlined />} />
+            </Tooltip>
           </Popconfirm>
         </div>
       ),
@@ -154,10 +200,34 @@ export default function AdminDashboard() {
   ];
 
   const stats = [
-    { label: 'Tổng số xe', value: cars.length },
-    { label: 'Đang bán', value: cars.filter((c) => c.status === 'available').length },
-    { label: 'Đã bán', value: cars.filter((c) => c.status === 'sold').length },
-    { label: 'Nổi bật', value: cars.filter((c) => c.isFeatured).length },
+    {
+      label: 'Tổng số xe',
+      value: cars.length,
+      icon: <CarOutlined />,
+      accent: 'text-brand',
+      bg: 'bg-brand/10',
+    },
+    {
+      label: 'Đang bán',
+      value: cars.filter((c) => c.status === 'available').length,
+      icon: <TagOutlined />,
+      accent: 'text-emerald-600',
+      bg: 'bg-emerald-50',
+    },
+    {
+      label: 'Đã bán',
+      value: cars.filter((c) => c.status === 'sold').length,
+      icon: <CheckCircleOutlined />,
+      accent: 'text-slate-500',
+      bg: 'bg-slate-100',
+    },
+    {
+      label: 'Nổi bật',
+      value: cars.filter((c) => c.isFeatured).length,
+      icon: <FireOutlined />,
+      accent: 'text-amber-600',
+      bg: 'bg-amber-50',
+    },
   ];
 
   return (
@@ -209,9 +279,21 @@ export default function AdminDashboard() {
         {/* Stats */}
         <div className="mt-6 grid grid-cols-2 gap-4 lg:grid-cols-4">
           {stats.map((stat) => (
-            <div key={stat.label} className="rounded-2xl border border-gray-100 bg-white p-5 shadow-card">
-              <p className="font-display text-3xl font-extrabold text-charcoal">{stat.value}</p>
-              <p className="mt-1 text-sm text-gray-500">{stat.label}</p>
+            <div
+              key={stat.label}
+              className="flex items-center gap-4 rounded-2xl border border-gray-100 bg-white p-5 shadow-card transition duration-200 hover:-translate-y-0.5 hover:border-gray-200 hover:shadow-lg"
+            >
+              <span
+                className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-xl text-xl ${stat.bg} ${stat.accent}`}
+              >
+                {stat.icon}
+              </span>
+              <div>
+                <p className="font-display text-3xl font-extrabold leading-none text-charcoal">
+                  {stat.value}
+                </p>
+                <p className="mt-1.5 text-sm text-gray-500">{stat.label}</p>
+              </div>
             </div>
           ))}
         </div>
