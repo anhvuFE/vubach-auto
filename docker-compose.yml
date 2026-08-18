@@ -1,0 +1,22 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: vubach-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: vubach_auto
+    ports:
+      # Host 5433 → container 5432 (5432 is taken by another local project)
+      - '5433:5432'
+    volumes:
+      - vubach-pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U postgres -d vubach_auto']
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  vubach-pgdata:
