@@ -15,7 +15,7 @@ import {
 import CarFormModal from './CarFormModal';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { addCar, updateCar, deleteCar, resetCars, setCars } from '@/store/slices/carSlice';
-import { setAdminAuthenticated } from '@/store/slices/uiSlice';
+import { logoutThunk } from '@/store/slices/authSlice';
 import { formatPrice } from '@/utils/format';
 import { carDisplayName, type Car, type CarInput, type CarStatus } from '@/types/car';
 
@@ -192,7 +192,7 @@ export default function AdminDashboard() {
             </Popconfirm>
             <Button
               icon={<LogoutOutlined />}
-              onClick={() => dispatch(setAdminAuthenticated(false))}
+              onClick={() => dispatch(logoutThunk())}
             >
               Đăng xuất
             </Button>

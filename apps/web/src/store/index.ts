@@ -1,4 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit';
+import authReducer from './slices/authSlice';
 import carsReducer from './slices/carSlice';
 import filterReducer from './slices/filterSlice';
 import favoriteReducer from './slices/favoriteSlice';
@@ -11,6 +12,7 @@ import uiReducer from './slices/uiSlice';
 export const makeStore = () =>
   configureStore({
     reducer: {
+      auth: authReducer,
       cars: carsReducer,
       filter: filterReducer,
       favorite: favoriteReducer,

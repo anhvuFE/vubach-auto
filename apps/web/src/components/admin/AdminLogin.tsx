@@ -2,24 +2,36 @@
 
 import { useState } from 'react';
 import { App, Button, Input } from 'antd';
-import { LockOutlined } from '@ant-design/icons';
-import { useAppDispatch } from '@/store/hooks';
-import { setAdminAuthenticated } from '@/store/slices/uiSlice';
-
-const ADMIN_PASSWORD = process.env.NEXT_PUBLIC_ADMIN_PASSWORD ?? 'admin123';
+import { LockOutlined, MailOutlined } from '@ant-design/icons';
+import { useAppDispatch, useAppSelector } from '@/store/hooks';
+import { loginThunk, logoutThunk } from '@/store/slices/authSlice';
 
 export default function AdminLogin() {
   const { message } = App.useApp();
   const dispatch = useAppDispatch();
+  const submitting = useAppSelector((s) => s.auth.status === 'loading');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleLogin = () => {
-    if (password === ADMIN_PASSWORD) {
-      dispatch(setAdminAuthenticated(true));
-      message.success('Đăng nhập thành công');
-    } else {
-      message.error('Mật khẩu không đúng');
+  const handleLogin = async () => {
+    if (!email || !password) {
+      message.warning('Vui lòng nhập email và mật khẩu');
+      return;
     }
+
+    const action = await dispatch(loginThunk({ email, password }));
+    if (loginThunk.rejected.match(action)) {
+      message.error('Email hoặc mật khẩu không đúng');
+      return;
+    }
+
+    // Only admins may enter the CMS; sign a non-admin straight back out.
+    if (action.payload.role !== 'ADMIN') {
+      message.error('Tài khoản không có quyền quản trị');
+      await dispatch(logoutThunk());
+      return;
+    }
+    message.success('Đăng nhập thành công');
   };
 
   return (
@@ -32,27 +44,39 @@ export default function AdminLogin() {
           Quản trị viên
         </h1>
         <p className="mt-1 text-center text-sm text-gray-500">
-          Nhập mật khẩu để truy cập trang quản lý xe.
+          Đăng nhập để truy cập trang quản lý xe.
         </p>
-        <Input.Password
+        <Input
           size="large"
           className="mt-6"
+          type="email"
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          onPressEnter={handleLogin}
+          prefix={<MailOutlined />}
+          autoComplete="email"
+        />
+        <Input.Password
+          size="large"
+          className="mt-3"
           placeholder="Mật khẩu"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           onPressEnter={handleLogin}
           prefix={<LockOutlined />}
+          autoComplete="current-password"
         />
         <Button
           type="primary"
           size="large"
           block
+          loading={submitting}
           className="mt-4 font-bold"
           onClick={handleLogin}
         >
           Đăng nhập
         </Button>
-        <p className="mt-4 text-center text-xs text-gray-400">Mật khẩu mặc định: admin123</p>
       </div>
     </div>
   );
