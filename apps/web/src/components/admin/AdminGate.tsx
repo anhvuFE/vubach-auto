@@ -1,7 +1,7 @@
 'use client';
 
-import { Spin } from 'antd';
 import { useAppSelector } from '@/store/hooks';
+import Loading from '@/components/common/Loading';
 import AdminLogin from './AdminLogin';
 import AdminDashboard from './AdminDashboard';
 
@@ -15,11 +15,7 @@ export default function AdminGate() {
   const user = useAppSelector((s) => s.auth.user);
 
   if (!initialized) {
-    return (
-      <div className="flex min-h-[70vh] items-center justify-center pt-24">
-        <Spin size="large" />
-      </div>
-    );
+    return <Loading tip="Đang kiểm tra phiên đăng nhập..." />;
   }
 
   const isAdmin = user?.role === 'ADMIN';
