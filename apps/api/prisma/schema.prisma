@@ -43,3 +43,35 @@ model Car {
   @@index([status])
   @@map("cars")
 }
+
+/// An authenticated account. `role` mirrors the UserRole union in @vubach/shared
+/// ("USER" | "ADMIN") rather than a DB enum, keeping labels on the TS side.
+/// `password` stores a bcrypt hash and is never returned to clients.
+model User {
+  id            String         @id @default(cuid())
+  email         String         @unique
+  password      String
+  name          String
+  role          String         @default("USER")
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  refreshTokens RefreshToken[]
+
+  @@map("users")
+}
+
+/// A long-lived refresh token issued at login/register. Only the SHA-256 hash
+/// of the token is stored so a DB leak can't be replayed. Tokens are rotated on
+/// every refresh (old row gets `revokedAt`) so reuse of a stale token is detectable.
+model RefreshToken {
+  id        String    @id @default(cuid())
+  tokenHash String    @unique
+  userId    String
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt DateTime
+  revokedAt DateTime?
+  createdAt DateTime  @default(now())
+
+  @@index([userId])
+  @@map("refresh_tokens")
+}
