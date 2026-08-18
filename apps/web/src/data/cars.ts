@@ -36,6 +36,52 @@ const IMG = {
   peugeot2008: [
     'https://thanhnienviet.mediacdn.vn/zoom/700_438/uploads/2021_05/gia-xe-peuheot-2008-oto-com-vn-1-9e56.jpg',
   ],
+  xpander: [
+    'https://commons.wikimedia.org/wiki/Special:FilePath/Mitsubishi_Xpander_1.5_GLS_%28Expander%29_2023.jpg?width=900',
+  ],
+  ranger: [
+    'https://commons.wikimedia.org/wiki/Special:FilePath/Ford_Ranger_4x4_Wildtrak_2023_%287%29.jpg?width=900',
+  ],
+  // Model-matched photos from Wikimedia Commons (stable Special:FilePath URLs).
+  fortuner: [
+    'https://commons.wikimedia.org/wiki/Special:FilePath/2020_Toyota_Fortuner_2.8_Legender_4WD.jpg?width=900',
+  ],
+  vios: [
+    'https://commons.wikimedia.org/wiki/Special:FilePath/Toyota_Vios_XP150_%28front%29.jpg?width=900',
+  ],
+  civic: [
+    'https://commons.wikimedia.org/wiki/Special:FilePath/Honda_Civic_%282021%29_sedan_Sport_DSC_7057.jpg?width=900',
+  ],
+  cx5: [
+    'https://commons.wikimedia.org/wiki/Special:FilePath/2018_Mazda_CX-5_Sport_NAV_Diesel_Automatic_2.2.jpg?width=900',
+  ],
+  sorento: [
+    'https://commons.wikimedia.org/wiki/Special:FilePath/2020_Kia_Sorento_4_HEV_AWD_Automatic_1.6_Front.jpg?width=900',
+  ],
+  everest: [
+    'https://commons.wikimedia.org/wiki/Special:FilePath/Ford_Everest_2023_Limited_in_Aluminum_metallic.jpg?width=900',
+  ],
+  santafe: [
+    'https://commons.wikimedia.org/wiki/Special:FilePath/2022_Hyundai_Santa_Fe_%28facelift%29%2C_front_4.23.22.jpg?width=900',
+  ],
+  seltos: [
+    'https://commons.wikimedia.org/wiki/Special:FilePath/Kia_Seltos_SP2_PE_Snow_White_Pearl_%286%29_%28cropped%29.jpg?width=900',
+  ],
+  corollaCross: [
+    'https://commons.wikimedia.org/wiki/Special:FilePath/2020_Toyota_Corolla_Cross_-_Front.jpg?width=900',
+  ],
+  city: [
+    'https://commons.wikimedia.org/wiki/Special:FilePath/2022_Honda_City_1.5_GN2_%2820220317%29_01.jpg?width=900',
+  ],
+  eclass: [
+    'https://commons.wikimedia.org/wiki/Special:FilePath/Mercedes_E_class_W213_Exclusive_black_%281%29.jpg?width=900',
+  ],
+  cx8: [
+    'https://commons.wikimedia.org/wiki/Special:FilePath/2022_Mazda_CX-8_2.5_SP_Exclusive.jpg?width=900',
+  ],
+  luxA20: [
+    'https://commons.wikimedia.org/wiki/Special:FilePath/Vinfast_Sedan_LUX_A2.0.jpg?width=900',
+  ],
   generic: [
     'https://images.unsplash.com/photo-1552519507-da3b142c6e3d?auto=format&fit=crop&w=900&q=70',
     'https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=900&q=70',
@@ -48,33 +94,52 @@ const withMain = (images: readonly string[]): Pick<Car, 'images' | 'mainImage'> 
   mainImage: images[0],
 });
 
+// Map a car (by brand + model text) to its model-matched photo set. First match
+// wins; patterns are specific enough not to overlap.
+const MODEL_IMG: { match: RegExp; img: readonly string[] }[] = [
+  { match: /fortuner/i, img: IMG.fortuner },
+  { match: /vios/i, img: IMG.vios },
+  { match: /civic/i, img: IMG.civic },
+  { match: /cx-?8/i, img: IMG.cx8 },
+  { match: /cx-?5/i, img: IMG.cx5 },
+  { match: /sorento/i, img: IMG.sorento },
+  { match: /everest/i, img: IMG.everest },
+  { match: /santa\s*fe/i, img: IMG.santafe },
+  { match: /seltos/i, img: IMG.seltos },
+  { match: /corolla\s*cross/i, img: IMG.corollaCross },
+  { match: /city/i, img: IMG.city },
+  { match: /e200|e-?class/i, img: IMG.eclass },
+  { match: /lux\s*a/i, img: IMG.luxA20 },
+  { match: /camry/i, img: IMG.camry },
+  { match: /xpander/i, img: IMG.xpander },
+  { match: /ranger/i, img: IMG.ranger },
+];
+
 /**
- * Varied stock photos for cars without a model-specific image, so the listing
- * looks like a real, diverse inventory instead of the same photo repeated.
+ * Body-type fallback pools (real photos of the right shape) for any car that
+ * doesn't match a model pattern above — avoids a random-supercar mismatch.
  */
-const unsplash = (id: string) =>
-  `https://images.unsplash.com/${id}?auto=format&fit=crop&w=900&q=70`;
+const IMG_BY_BODY: Record<string, readonly string[]> = {
+  Sedan: [IMG.camry[0], IMG.c200[0], IMG.bmw330[0], IMG.mazda3[0]],
+  SUV: [IMG.crv[0], IMG.tucson[0], IMG.peugeot2008[0]],
+  Hatchback: [IMG.vf3[0], IMG.mazda3[0]],
+  MPV: [IMG.xpander[0]],
+  Pickup: [IMG.ranger[0]],
+};
 
-const POOL: string[] = [
-  'photo-1552519507-da3b142c6e3d',
-  'photo-1494905998402-395d579af36f',
-  'photo-1503376780353-7e6692767b70',
-  'photo-1542362567-b07e54358753',
-  'photo-1583121274602-3e2820c69888',
-  'photo-1502877338535-766e1452684a',
-  'photo-1605559424843-9e4c228bf1c2',
-  'photo-1494976388531-d1058494cdd8',
-  'photo-1606664515524-ed2f786a0bd6',
-  'photo-1568605117036-5fe5e7bab0b7',
-  'photo-1550355291-bbee04a92027',
-  'photo-1580273916550-e323be2ae537',
-].map(unsplash);
+/** Choose the best available images for a generic car: model-matched, else body-type. */
+const imagesForCar = (
+  seed: CarSeed,
+  index: number,
+): Pick<Car, 'images' | 'mainImage'> => {
+  const key = `${seed.brand} ${seed.model}`;
+  const hit = MODEL_IMG.find((m) => m.match.test(key));
+  if (hit) return withMain(hit.img);
 
-/** Pick two distinct pool images for the car at `index` (deterministic). */
-const poolImages = (index: number): Pick<Car, 'images' | 'mainImage'> => {
-  const a = POOL[index % POOL.length];
-  const b = POOL[(index + 5) % POOL.length];
-  return { images: [a, b], mainImage: a };
+  const pool = IMG_BY_BODY[seed.bodyType] ?? IMG_BY_BODY.Sedan;
+  const a = pool[index % pool.length];
+  const b = pool[(index + 1) % pool.length];
+  return { images: a === b ? [a] : [a, b], mainImage: a };
 };
 
 const SEEDS: CarSeed[] = [
@@ -727,7 +792,7 @@ const buildCars = (seeds: CarSeed[]): Car[] =>
     const isGeneric = seed.mainImage === IMG.generic[0];
     return {
       ...seed,
-      ...(isGeneric ? poolImages(index) : {}),
+      ...(isGeneric ? imagesForCar(seed, index) : {}),
       id,
       slug: buildCarSlug({ brand: seed.brand, model: seed.model, year: seed.year, id }),
       createdAt,
