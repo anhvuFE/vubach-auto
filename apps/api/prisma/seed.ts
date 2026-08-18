@@ -5,8 +5,8 @@ const prisma = new PrismaClient();
 
 // Default admin account for the CMS. Override via env before seeding in any
 // shared environment; the password is stored as a bcrypt hash.
-const ADMIN_EMAIL = process.env.SEED_ADMIN_EMAIL ?? 'admin@vubachauto.vn';
-const ADMIN_PASSWORD = process.env.SEED_ADMIN_PASSWORD ?? 'admin12345';
+const ADMIN_EMAIL = process.env.SEED_ADMIN_EMAIL ?? 'admin@gmail.com';
+const ADMIN_PASSWORD = process.env.SEED_ADMIN_PASSWORD ?? '123456';
 const ADMIN_NAME = process.env.SEED_ADMIN_NAME ?? 'Vũ Bách Admin';
 const slugify = (brand: string, model: string, year: number): string =>
     `${brand}-${model}-${year}`
@@ -108,7 +108,7 @@ async function main() {
     const password = await bcrypt.hash(ADMIN_PASSWORD, 10);
     await prisma.user.upsert({
         where: { email: ADMIN_EMAIL },
-        update: { role: 'ADMIN', name: ADMIN_NAME },
+        update: { role: 'ADMIN', name: ADMIN_NAME, password },
         create: { email: ADMIN_EMAIL, name: ADMIN_NAME, role: 'ADMIN', password },
     });
     console.log(`✅ Seeded admin user: ${ADMIN_EMAIL}`);
