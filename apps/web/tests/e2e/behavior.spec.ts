@@ -191,14 +191,81 @@ test('Favorites: add two cars, then remove one', async ({ page }) => {
 
 // ─────────────────────────── Admin auth ───────────────────────────
 
+const ADMIN_EMAIL = 'admin@vubachauto.vn';
+const ADMIN_PASSWORD = 'admin12345';
+
+const ADMIN_USER = {
+  id: 'user-admin',
+  email: ADMIN_EMAIL,
+  name: 'Vũ Bách Admin',
+  role: 'ADMIN',
+  createdAt: '2026-01-01T00:00:00.000Z',
+  updatedAt: '2026-01-01T00:00:00.000Z',
+};
+
+/**
+ * Stub the NestJS auth API so these tests stay hermetic (Playwright only boots
+ * the web server). Login succeeds only for the seeded admin credentials.
+ */
+async function mockAuthApi(page: import('@playwright/test').Page) {
+  await page.route('**/api/auth/login', async (route) => {
+    const body = route.request().postDataJSON() as {
+      email?: string;
+      password?: string;
+    };
+    if (body?.email === ADMIN_EMAIL && body?.password === ADMIN_PASSWORD) {
+      await route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify({
+          success: true,
+          data: {
+            accessToken: 'test-access-token',
+            refreshToken: 'test-refresh-token',
+            user: ADMIN_USER,
+          },
+        }),
+      });
+    } else {
+      await route.fulfill({
+        status: 401,
+        contentType: 'application/json',
+        body: JSON.stringify({
+          success: false,
+          message: 'Invalid email or password',
+          statusCode: 401,
+        }),
+      });
+    }
+  });
+
+  await page.route('**/api/auth/logout', (route) =>
+    route.fulfill({
+      status: 200,
+      contentType: 'application/json',
+      body: JSON.stringify({ success: true, data: { revoked: true } }),
+    }),
+  );
+
+  await page.route('**/api/auth/me', (route) =>
+    route.fulfill({
+      status: 200,
+      contentType: 'application/json',
+      body: JSON.stringify({ success: true, data: ADMIN_USER }),
+    }),
+  );
+}
+
 test('Admin: wrong password blocked, correct password unlocks dashboard', async ({ page }) => {
+  await mockAuthApi(page);
   await page.goto('/admin', { waitUntil: 'load' });
 
+  await page.getByPlaceholder('Email').fill(ADMIN_EMAIL);
   await page.getByPlaceholder('Mật khẩu').fill('wrong-pass');
   await page.getByRole('button', { name: 'Đăng nhập' }).click();
-  await expect(page.getByText('Mật khẩu không đúng')).toBeVisible();
+  await expect(page.getByText('Email hoặc mật khẩu không đúng')).toBeVisible();
 
-  await page.getByPlaceholder('Mật khẩu').fill('admin123');
+  await page.getByPlaceholder('Mật khẩu').fill(ADMIN_PASSWORD);
   await page.getByRole('button', { name: 'Đăng nhập' }).click();
 
   await expect(page.getByRole('heading', { name: 'Quản lý xe' })).toBeVisible();
@@ -210,8 +277,10 @@ test('Admin: wrong password blocked, correct password unlocks dashboard', async 
 
 test('Admin: delete a car removes it from the table', async ({ page }, info) => {
   desktopOnly(info.project.name);
+  await mockAuthApi(page);
   await page.goto('/admin', { waitUntil: 'load' });
-  await page.getByPlaceholder('Mật khẩu').fill('admin123');
+  await page.getByPlaceholder('Email').fill(ADMIN_EMAIL);
+  await page.getByPlaceholder('Mật khẩu').fill(ADMIN_PASSWORD);
   await page.getByRole('button', { name: 'Đăng nhập' }).click();
   await expect(page.getByRole('heading', { name: 'Quản lý xe' })).toBeVisible();
 
