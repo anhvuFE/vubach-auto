@@ -1,14 +1,17 @@
 'use client';
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { App, Button, Input } from 'antd';
 import { LockOutlined, MailOutlined } from '@ant-design/icons';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { loginThunk, logoutThunk } from '@/store/slices/authSlice';
 
-export default function AdminLogin() {
+/** Email/password login form. On success as an admin, navigates to `redirectTo`. */
+export default function AdminLogin({ redirectTo = '/admin' }: { redirectTo?: string }) {
   const { message } = App.useApp();
   const dispatch = useAppDispatch();
+  const router = useRouter();
   const submitting = useAppSelector((s) => s.auth.status === 'loading');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -32,6 +35,7 @@ export default function AdminLogin() {
       return;
     }
     message.success('Đăng nhập thành công');
+    router.replace(redirectTo);
   };
 
   return (
