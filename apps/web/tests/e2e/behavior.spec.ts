@@ -1,4 +1,4 @@
-import { test, expect, type Page } from '@playwright/test';
+import { test, expect, type Locator, type Page } from '@playwright/test';
 
 const CARD = '[data-testid="car-card"]';
 
@@ -191,8 +191,8 @@ test('Favorites: add two cars, then remove one', async ({ page }) => {
 
 // ─────────────────────────── Admin auth ───────────────────────────
 
-const ADMIN_EMAIL = 'admin@vubachauto.vn';
-const ADMIN_PASSWORD = 'admin12345';
+const ADMIN_EMAIL = 'admin@gmail.com';
+const ADMIN_PASSWORD = '123456';
 
 const ADMIN_USER = {
   id: 'user-admin',
@@ -295,4 +295,113 @@ test('Admin: delete a car removes it from the table', async ({ page }, info) => 
     const after = Number((await totalCell.innerText()).trim());
     expect(after).toBe(before - 1);
   }).toPass({ timeout: 4000 });
+});
+
+// ─────────────────────────── Admin car form (create / edit) ───────────────────────────
+
+/** Log in as the seeded admin (works whether /admin gates inline or redirects to /login). */
+async function loginAsAdmin(page: Page) {
+  await mockAuthApi(page);
+  await page.goto('/admin', { waitUntil: 'load' });
+  await page.getByPlaceholder('Email').fill(ADMIN_EMAIL);
+  await page.getByPlaceholder('Mật khẩu').fill(ADMIN_PASSWORD);
+  await page.getByRole('button', { name: 'Đăng nhập' }).click();
+  await expect(page.getByRole('heading', { name: 'Quản lý xe' })).toBeVisible();
+}
+
+const totalCarsCell = (page: Page) =>
+  page.locator('text=Tổng số xe').locator('..').locator('p').first();
+
+/** Open the antd Select inside the form item with `itemLabel` and pick `optionText`. */
+async function pickSelectOption(
+  page: Page,
+  modal: Locator,
+  itemLabel: string,
+  optionText: string,
+) {
+  await modal
+    .locator('.ant-form-item')
+    .filter({ hasText: itemLabel })
+    .locator('.ant-select')
+    .first()
+    .click();
+  await page
+    .locator('.ant-select-dropdown:visible .ant-select-item-option')
+    .filter({ hasText: optionText })
+    .first()
+    .click();
+}
+
+test('Admin: create a car adds it to the table and updates stats', async ({ page }, info) => {
+  desktopOnly(info.project.name);
+  await loginAsAdmin(page);
+
+  const before = Number((await totalCarsCell(page).innerText()).trim());
+
+  await page.getByRole('button', { name: 'Thêm xe mới' }).click();
+  const modal = page.locator('.ant-modal-content');
+  await expect(modal.getByText('Thêm xe mới')).toBeVisible();
+
+  await pickSelectOption(page, modal, 'Hãng xe', 'Toyota');
+  await modal.getByPlaceholder('VD: Camry 2.5Q').fill('Corolla Cross Test');
+  await modal.getByPlaceholder('2024').fill('2024');
+  await modal.getByPlaceholder('559000000').fill('800000000');
+  await modal.getByPlaceholder('15000').fill('12000');
+  await modal.getByPlaceholder('Trắng').fill('Đỏ');
+  await modal
+    .getByPlaceholder('Mô tả chi tiết về xe...')
+    .fill('Xe test tự động, đầy đủ tiện nghi.');
+
+  await modal.getByRole('button', { name: 'Thêm xe', exact: true }).click();
+  await expect(page.getByText('Đã thêm xe mới')).toBeVisible();
+  await expect(page.getByText('Corolla Cross Test')).toBeVisible();
+
+  await expect(async () => {
+    const after = Number((await totalCarsCell(page).innerText()).trim());
+    expect(after).toBe(before + 1);
+  }).toPass({ timeout: 4000 });
+});
+
+test('Admin: car form blocks submit and flags required fields when empty', async ({ page }, info) => {
+  desktopOnly(info.project.name);
+  await loginAsAdmin(page);
+
+  await page.getByRole('button', { name: 'Thêm xe mới' }).click();
+  const modal = page.locator('.ant-modal-content');
+  await modal.getByRole('button', { name: 'Thêm xe', exact: true }).click();
+
+  // brand/model/year/price/mileage/color/description are all required.
+  await expect(modal.getByText('Bắt buộc').first()).toBeVisible();
+  expect(await modal.getByText('Bắt buộc').count()).toBeGreaterThanOrEqual(5);
+  // Submit was blocked → the create modal is still open.
+  await expect(modal.getByText('Thêm xe mới')).toBeVisible();
+});
+
+test('Admin: edit a car updates the row', async ({ page }, info) => {
+  desktopOnly(info.project.name);
+  await loginAsAdmin(page);
+
+  // First action button in a row is Edit.
+  await page.locator('.ant-table-row').first().getByRole('button').first().click();
+  const modal = page.locator('.ant-modal-content');
+  await expect(modal.getByText('Chỉnh sửa xe')).toBeVisible();
+
+  await modal.getByPlaceholder('VD: Camry 2.5Q').fill('Đã Đổi Tên');
+  await modal.getByRole('button', { name: 'Lưu thay đổi' }).click();
+  await expect(page.getByText('Đã cập nhật xe')).toBeVisible();
+  await expect(page.getByText('Đã Đổi Tên')).toBeVisible();
+});
+
+test('Admin: cancelling the form makes no change', async ({ page }, info) => {
+  desktopOnly(info.project.name);
+  await loginAsAdmin(page);
+
+  const before = Number((await totalCarsCell(page).innerText()).trim());
+  await page.getByRole('button', { name: 'Thêm xe mới' }).click();
+  const modal = page.locator('.ant-modal-content');
+  await modal.getByPlaceholder('VD: Camry 2.5Q').fill('Không lưu xe này');
+  await modal.getByRole('button', { name: 'Huỷ' }).click();
+
+  await expect(page.getByText('Không lưu xe này')).toHaveCount(0);
+  expect(Number((await totalCarsCell(page).innerText()).trim())).toBe(before);
 });
