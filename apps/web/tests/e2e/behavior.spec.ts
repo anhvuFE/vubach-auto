@@ -256,9 +256,12 @@ async function mockAuthApi(page: import('@playwright/test').Page) {
   );
 }
 
-test('Admin: wrong password blocked, correct password unlocks dashboard', async ({ page }) => {
+test('Admin: unauthenticated /admin redirects to login, correct password unlocks dashboard', async ({ page }) => {
   await mockAuthApi(page);
   await page.goto('/admin', { waitUntil: 'load' });
+
+  // The guard bounces an unauthenticated visitor to the dedicated login page.
+  await expect(page).toHaveURL(/\/login\?redirect=%2Fadmin|\/login\?redirect=\/admin/);
 
   await page.getByPlaceholder('Email').fill(ADMIN_EMAIL);
   await page.getByPlaceholder('Mật khẩu').fill('wrong-pass');
@@ -268,17 +271,20 @@ test('Admin: wrong password blocked, correct password unlocks dashboard', async 
   await page.getByPlaceholder('Mật khẩu').fill(ADMIN_PASSWORD);
   await page.getByRole('button', { name: 'Đăng nhập' }).click();
 
+  // Successful admin login returns to /admin and shows the dashboard.
+  await expect(page).toHaveURL(/\/admin$/);
   await expect(page.getByRole('heading', { name: 'Quản lý xe' })).toBeVisible();
 
-  // Logout returns to the gate.
+  // Logout sends the admin back to the login page.
   await page.getByRole('button', { name: 'Đăng xuất' }).click();
+  await expect(page).toHaveURL(/\/login/);
   await expect(page.getByRole('heading', { name: 'Quản trị viên' })).toBeVisible();
 });
 
 test('Admin: delete a car removes it from the table', async ({ page }, info) => {
   desktopOnly(info.project.name);
   await mockAuthApi(page);
-  await page.goto('/admin', { waitUntil: 'load' });
+  await page.goto('/login', { waitUntil: 'load' });
   await page.getByPlaceholder('Email').fill(ADMIN_EMAIL);
   await page.getByPlaceholder('Mật khẩu').fill(ADMIN_PASSWORD);
   await page.getByRole('button', { name: 'Đăng nhập' }).click();
