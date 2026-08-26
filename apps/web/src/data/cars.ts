@@ -783,6 +783,25 @@ const SEEDS: CarSeed[] = [
 const BASE_DATE = new Date('2025-06-01T00:00:00Z').getTime();
 const DAY = 24 * 60 * 60 * 1000;
 
+const INSPECTION_POINTS = [120, 128, 135] as const;
+
+/**
+ * Deterministic history/inspection defaults for the mock inventory (a real API
+ * would send these). Derived from the index so server and client agree; any
+ * value a seed sets explicitly wins over these defaults.
+ */
+const historyDefaults = (
+  seed: CarSeed,
+  index: number,
+): Pick<Car, 'ownerCount' | 'accidentFree' | 'inspected' | 'inspectionPoints' | 'registrationExpiry'> => ({
+  ownerCount: (index % 3) + 1,
+  accidentFree: true,
+  inspected: true,
+  inspectionPoints: INSPECTION_POINTS[index % INSPECTION_POINTS.length],
+  // Registration valid a couple of years past the car's model year.
+  registrationExpiry: `${String((index % 12) + 1).padStart(2, '0')}/${seed.year + 3}`,
+});
+
 const buildCars = (seeds: CarSeed[]): Car[] =>
   seeds.map((seed, index) => {
     const id = `car-${String(index + 1).padStart(2, '0')}`;
@@ -791,6 +810,7 @@ const buildCars = (seeds: CarSeed[]): Car[] =>
     // Give generic-photo cars a varied image so the grid doesn't look templated.
     const isGeneric = seed.mainImage === IMG.generic[0];
     return {
+      ...historyDefaults(seed, index),
       ...seed,
       ...(isGeneric ? imagesForCar(seed, index) : {}),
       id,

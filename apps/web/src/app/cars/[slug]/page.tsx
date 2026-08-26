@@ -13,9 +13,11 @@ import {
 import CarGallery from '@/components/cars/CarGallery';
 import CarContactCard from '@/components/cars/CarContactCard';
 import CarSpecs from '@/components/cars/CarSpecs';
+import CarHistory from '@/components/cars/CarHistory';
 import LoanCalculator from '@/components/cars/LoanCalculator';
 import SimilarCars from '@/components/cars/SimilarCars';
 import JsonLd from '@/components/common/JsonLd';
+import InspectionBadge from '@/components/common/InspectionBadge';
 import { CARS, getCarBySlug, getSimilarCars } from '@/data/cars';
 import { carDisplayName } from '@/types/car';
 import { formatMileage } from '@/utils/format';
@@ -105,6 +107,12 @@ export default async function CarDetailPage({ params }: { params: Params }) {
                 {carDisplayName(car)} {car.year}
               </h1>
 
+              {car.inspected && (
+                <div className="mt-3">
+                  <InspectionBadge points={car.inspectionPoints} />
+                </div>
+              )}
+
               {/* Quick specs */}
               <div className="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
                 {quickSpecs.map((spec) => (
@@ -122,6 +130,10 @@ export default async function CarDetailPage({ params }: { params: Params }) {
 
             <div className="mt-8">
               <CarSpecs car={car} />
+            </div>
+
+            <div className="mt-8">
+              <CarHistory car={car} />
             </div>
 
             <div className="mt-8">

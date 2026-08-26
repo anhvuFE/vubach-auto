@@ -206,6 +206,27 @@ export default function CarFormModal({ open, car, onCancel, onSubmit }: CarFormM
           </Form.Item>
         </div>
 
+        <div className="mb-2 mt-2 text-sm font-semibold text-charcoal">Lịch sử & kiểm định</div>
+        <div className="grid gap-x-4 sm:grid-cols-3">
+          <Form.Item name="ownerCount" label="Số đời chủ">
+            <InputNumber className="w-full" min={1} max={20} placeholder="1" />
+          </Form.Item>
+          <Form.Item name="registrationExpiry" label="Hạn đăng kiểm">
+            <Input placeholder="VD: 06/2026" />
+          </Form.Item>
+          <Form.Item name="inspectionPoints" label="Số điểm kiểm định">
+            <InputNumber className="w-full" min={0} max={500} placeholder="128" />
+          </Form.Item>
+        </div>
+        <div className="grid gap-x-4 sm:grid-cols-2">
+          <Form.Item name="inspected" label="Đã kiểm định" valuePropName="checked">
+            <Switch />
+          </Form.Item>
+          <Form.Item name="accidentFree" label="Không đâm đụng, ngập nước" valuePropName="checked">
+            <Switch />
+          </Form.Item>
+        </div>
+
         <Form.Item name="isFeatured" label="Xe nổi bật (hiển thị trang chủ)" valuePropName="checked">
           <Switch />
         </Form.Item>

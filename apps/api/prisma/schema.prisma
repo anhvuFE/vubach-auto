@@ -36,6 +36,12 @@ model Car {
   isFeatured   Boolean  @default(false)
   contactPhone String?
   contactName  String?
+  // History & inspection (optional).
+  ownerCount        Int?
+  accidentFree      Boolean?
+  inspected         Boolean  @default(false)
+  inspectionPoints  Int?
+  registrationExpiry String?
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 
