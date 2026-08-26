@@ -8,6 +8,7 @@ import {
 } from '@ant-design/icons';
 import CarImage from '@/components/common/CarImage';
 import StatusBadge from '@/components/common/StatusBadge';
+import InspectionBadge from '@/components/common/InspectionBadge';
 import FavoriteButton from '@/components/common/FavoriteButton';
 import CompareButton from '@/components/common/CompareButton';
 import QuickView from './QuickView';
@@ -58,11 +59,12 @@ export default function CarCard({ car, layout = 'grid', priority = false }: CarC
             car.status === 'sold' ? 'grayscale-[35%]' : ''
           }`}
         />
-        <div className="absolute left-3 top-3 z-10 flex gap-2">
+        <div className="absolute left-3 top-3 z-10 flex max-w-[calc(100%-3.5rem)] flex-wrap gap-2">
           <StatusBadge status={car.status} />
           <span className="inline-flex items-center rounded-full bg-charcoal/80 px-2.5 py-1 text-xs font-semibold text-white backdrop-blur">
             {car.condition}
           </span>
+          {car.inspected && <InspectionBadge points={car.inspectionPoints} />}
         </div>
         <div className="absolute right-3 top-3 z-10 flex flex-col gap-2">
           <FavoriteButton carId={car.id} />

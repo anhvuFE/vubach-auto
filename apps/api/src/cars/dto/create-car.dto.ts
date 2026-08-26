@@ -29,4 +29,9 @@ export class CreateCarDto {
   @IsOptional() @IsBoolean() isFeatured?: boolean;
   @IsOptional() @IsString() contactPhone?: string;
   @IsOptional() @IsString() contactName?: string;
+  @IsOptional() @IsInt() @Min(1) ownerCount?: number;
+  @IsOptional() @IsBoolean() accidentFree?: boolean;
+  @IsOptional() @IsBoolean() inspected?: boolean;
+  @IsOptional() @IsInt() @Min(0) inspectionPoints?: number;
+  @IsOptional() @IsString() registrationExpiry?: string;
 }

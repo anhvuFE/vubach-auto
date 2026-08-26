@@ -37,6 +37,17 @@ export interface Car {
   isFeatured?: boolean;
   contactPhone?: string;
   contactName?: string;
+  // --- History & inspection (optional) ---
+  /** Number of previous owners (số đời chủ). */
+  ownerCount?: number;
+  /** No accident / flood history (không đâm đụng, ngập nước). */
+  accidentFree?: boolean;
+  /** Passed the dealership's multi-point inspection. */
+  inspected?: boolean;
+  /** How many inspection points were checked, e.g. 128. */
+  inspectionPoints?: number;
+  /** Registration/inspection valid until, free-form e.g. "06/2026". */
+  registrationExpiry?: string;
   createdAt: string;
   updatedAt: string;
 }
