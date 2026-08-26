@@ -13,6 +13,7 @@ import {
 import CarGallery from '@/components/cars/CarGallery';
 import CarContactCard from '@/components/cars/CarContactCard';
 import CarSpecs from '@/components/cars/CarSpecs';
+import LoanCalculator from '@/components/cars/LoanCalculator';
 import SimilarCars from '@/components/cars/SimilarCars';
 import JsonLd from '@/components/common/JsonLd';
 import { CARS, getCarBySlug, getSimilarCars } from '@/data/cars';
@@ -121,6 +122,10 @@ export default async function CarDetailPage({ params }: { params: Params }) {
 
             <div className="mt-8">
               <CarSpecs car={car} />
+            </div>
+
+            <div className="mt-8">
+              <LoanCalculator car={car} />
             </div>
           </div>
 
