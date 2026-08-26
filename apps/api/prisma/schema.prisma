@@ -43,3 +43,24 @@ model Car {
   @@index([status])
   @@map("cars")
 }
+
+/// A test-drive / viewing request submitted from a car detail page. The car is
+/// referenced by slug + a denormalized name (no FK) so the lead is preserved
+/// even if the listing changes or is removed.
+model Booking {
+  id            String    @id @default(cuid())
+  kind          String    @default("test-drive")
+  carSlug       String
+  carName       String
+  name          String
+  phone         String
+  preferredDate DateTime?
+  note          String?
+  status        String    @default("pending")
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  @@index([status])
+  @@index([carSlug])
+  @@map("bookings")
+}

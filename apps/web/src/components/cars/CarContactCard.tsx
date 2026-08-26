@@ -2,17 +2,19 @@
 
 import { useState } from 'react';
 import { App, DatePicker, Form, Input, Modal } from 'antd';
+import type { Dayjs } from 'dayjs';
 import { PhoneOutlined, CalendarOutlined, CarOutlined, MessageOutlined } from '@ant-design/icons';
 import { SITE } from '@/constants/site';
 import { formatPrice } from '@/utils/format';
 import { carDisplayName, type Car } from '@/types/car';
+import { createBooking, type BookingKind } from '@/services/bookings';
 
-type LeadKind = 'test-drive' | 'schedule' | null;
+type LeadKind = BookingKind | null;
 
 interface LeadForm {
   name: string;
   phone: string;
-  date?: unknown;
+  date?: Dayjs;
   note?: string;
 }
 
@@ -20,18 +22,37 @@ export default function CarContactCard({ car }: { car: Car }) {
   const { message } = App.useApp();
   const [form] = Form.useForm<LeadForm>();
   const [kind, setKind] = useState<LeadKind>(null);
+  const [submitting, setSubmitting] = useState(false);
 
   const title = kind === 'test-drive' ? 'Đăng ký lái thử' : 'Đặt lịch xem xe';
 
   const handleSubmit = async () => {
+    let values: LeadForm;
     try {
-      await form.validateFields();
-      // Mock submit — later POST to a real API endpoint.
+      values = await form.validateFields();
+    } catch {
+      return; // validation errors shown inline
+    }
+    if (!kind) return;
+
+    setSubmitting(true);
+    try {
+      await createBooking({
+        kind,
+        carSlug: car.slug,
+        carName: carDisplayName(car),
+        name: values.name,
+        phone: values.phone,
+        preferredDate: values.date ? values.date.toISOString() : null,
+        note: values.note ?? null,
+      });
       setKind(null);
       form.resetFields();
       message.success('Đã gửi yêu cầu! Vũ Bách Auto sẽ liên hệ với bạn sớm nhất.');
-    } catch {
-      /* validation errors shown inline */
+    } catch (err) {
+      message.error(err instanceof Error ? err.message : 'Gửi yêu cầu thất bại.');
+    } finally {
+      setSubmitting(false);
     }
   };
 
@@ -87,6 +108,8 @@ export default function CarContactCard({ car }: { car: Car }) {
         onOk={handleSubmit}
         okText="Gửi yêu cầu"
         cancelText="Huỷ"
+        confirmLoading={submitting}
+        maskClosable={!submitting}
         okButtonProps={{ style: { background: '#2563eb' } }}
       >
         <p className="mb-4 text-sm text-gray-500">
