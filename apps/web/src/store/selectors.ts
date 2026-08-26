@@ -76,3 +76,10 @@ export const selectFavoriteCars = createSelector(
   [selectCarItems, (state: RootState) => state.favorite.ids],
   (cars, ids): Car[] => cars.filter((c) => ids.includes(c.id)),
 );
+
+/** Cars selected for comparison, kept in the order they were added. */
+export const selectCompareCars = createSelector(
+  [selectCarItems, (state: RootState) => state.compare.ids],
+  (cars, ids): Car[] =>
+    ids.map((id) => cars.find((c) => c.id === id)).filter((c): c is Car => c != null),
+);
