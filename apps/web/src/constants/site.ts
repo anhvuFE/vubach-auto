@@ -8,6 +8,7 @@ export const SITE = {
   description:
     'Vũ Bách Auto – Showroom chuyên mua bán, thu mua và ký gửi ô tô đã qua sử dụng. Xe kiểm định chất lượng, hỗ trợ trả góp, sang tên nhanh chóng.',
   url: process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000',
+  apiUrl: process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:4000/api',
   hotline: process.env.NEXT_PUBLIC_HOTLINE ?? '0975224557',
   zalo: process.env.NEXT_PUBLIC_ZALO ?? '0975224557',
   email: process.env.NEXT_PUBLIC_EMAIL ?? 'lienhe@vubachauto.vn',
