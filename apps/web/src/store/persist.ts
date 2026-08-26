@@ -1,12 +1,14 @@
 import type { AppStore } from './index';
 import { setCars } from './slices/carSlice';
 import { setFavorites } from './slices/favoriteSlice';
+import { setCompare } from './slices/compareSlice';
 import { setAdminAuthenticated } from './slices/uiSlice';
 import type { Car } from '@/types/car';
 
 const KEYS = {
   cars: 'vba:cars',
   favorites: 'vba:favorites',
+  compare: 'vba:compare',
   admin: 'vba:admin-auth',
 } as const;
 
@@ -24,6 +26,9 @@ export const hydrateStore = (store: AppStore): void => {
   const favorites = readJSON<string[]>(KEYS.favorites);
   if (favorites) store.dispatch(setFavorites(favorites));
 
+  const compare = readJSON<string[]>(KEYS.compare);
+  if (compare) store.dispatch(setCompare(compare));
+
   const cars = readJSON<Car[]>(KEYS.cars);
   if (cars && Array.isArray(cars) && cars.length > 0) store.dispatch(setCars(cars));
 
@@ -36,6 +41,7 @@ export const persistStore = (store: AppStore): (() => void) => {
   let prev = {
     cars: store.getState().cars.items,
     favorites: store.getState().favorite.ids,
+    compare: store.getState().compare.ids,
     admin: store.getState().ui.isAdminAuthenticated,
   };
 
@@ -43,6 +49,9 @@ export const persistStore = (store: AppStore): (() => void) => {
     const state = store.getState();
     if (state.favorite.ids !== prev.favorites) {
       window.localStorage.setItem(KEYS.favorites, JSON.stringify(state.favorite.ids));
+    }
+    if (state.compare.ids !== prev.compare) {
+      window.localStorage.setItem(KEYS.compare, JSON.stringify(state.compare.ids));
     }
     if (state.cars.items !== prev.cars) {
       window.localStorage.setItem(KEYS.cars, JSON.stringify(state.cars.items));
@@ -53,6 +62,7 @@ export const persistStore = (store: AppStore): (() => void) => {
     prev = {
       cars: state.cars.items,
       favorites: state.favorite.ids,
+      compare: state.compare.ids,
       admin: state.ui.isAdminAuthenticated,
     };
   });

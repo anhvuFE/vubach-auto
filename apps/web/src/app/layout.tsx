@@ -6,6 +6,7 @@ import Providers from '@/providers/Providers';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import FloatingActions from '@/components/layout/FloatingActions';
+import CompareBar from '@/components/cars/CompareBar';
 import JsonLd from '@/components/common/JsonLd';
 import { autoDealerSchema, websiteSchema } from '@/lib/jsonLd';
 import './globals.css';
@@ -81,6 +82,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <Footer />
           </div>
           <FloatingActions />
+          <CompareBar />
         </Providers>
       </body>
     </html>

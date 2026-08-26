@@ -9,6 +9,7 @@ import {
 import CarImage from '@/components/common/CarImage';
 import StatusBadge from '@/components/common/StatusBadge';
 import FavoriteButton from '@/components/common/FavoriteButton';
+import CompareButton from '@/components/common/CompareButton';
 import QuickView from './QuickView';
 import type { Car } from '@/types/car';
 import { carDisplayName } from '@/types/car';
@@ -63,7 +64,10 @@ export default function CarCard({ car, layout = 'grid', priority = false }: CarC
             {car.condition}
           </span>
         </div>
-        <FavoriteButton carId={car.id} className="absolute right-3 top-3 z-10" />
+        <div className="absolute right-3 top-3 z-10 flex flex-col gap-2">
+          <FavoriteButton carId={car.id} />
+          <CompareButton carId={car.id} />
+        </div>
         <div className="pointer-events-none absolute inset-0 z-10 flex items-center justify-center opacity-0 transition-opacity duration-300 group-hover:opacity-100">
           <QuickView car={car} />
         </div>

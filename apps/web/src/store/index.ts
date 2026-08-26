@@ -2,6 +2,7 @@ import { configureStore } from '@reduxjs/toolkit';
 import carsReducer from './slices/carSlice';
 import filterReducer from './slices/filterSlice';
 import favoriteReducer from './slices/favoriteSlice';
+import compareReducer from './slices/compareSlice';
 import uiReducer from './slices/uiSlice';
 
 /**
@@ -14,6 +15,7 @@ export const makeStore = () =>
       cars: carsReducer,
       filter: filterReducer,
       favorite: favoriteReducer,
+      compare: compareReducer,
       ui: uiReducer,
     },
   });
